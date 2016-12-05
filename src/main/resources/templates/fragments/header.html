@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Header template</title>
+    </head>
+    <body>
+
+        <header th:fragment="header">
+            <ul>
+                <li><a th:href="@{/}">Etusivu</a></li>
+                <li><a th:href="@{/employees}">Työntekijät</a></li>
+                <li><a th:href="@{/tasks}">Työvuorot</a></li>
+                <li><a th:href="@{/plans}">Suunnitelma</a></li>
+            </ul>
+        </header>
+
+    </body>
+</html>

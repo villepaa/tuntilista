@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Tasks</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        
+          
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+        
+        <h1>TYÖVUOROT</h1>
+  
+          <p>
+            <a th:href="@{/tasks/new}" class="btn btn-success">Lisää työvuoro</a>
+          </p>
+
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Tunnus</th>
+                <th>Alkuaika</th>
+                <th>Loppuaika</th>
+                <th>Kesto</th> 
+              </tr>
+            </thead>
+
+            <tbody>
+                
+                  <tr th:each="task : ${tasks}">
+                    <td><a href="@{/tasks/{id}}" th:text="${task.name}">id</a></td>
+                    <td th:text="${task.startTime}">alku</td>
+                    <td th:text="${task.endTime}">loppu</td>
+                  
+                    <th><form th:method="DELETE" th:action="@{/tasks/{id} (id=${task.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form></th>
+                  </tr>
+                
+            </tbody>
+          </table>
+       
+            <a th:href="@{/}">OK</a>
+        
+    </body>
+</html>

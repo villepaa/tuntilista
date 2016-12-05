@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Plan</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+        <h1>Työvuorolista: </h1>
+        
+        <p>Työvuoron lisääminen työntekijälle: 1. Liikuta hiiren osoitin halutun päivämäärän päälle ja paina painiketta. 2. Valitse avautuvasta listasta haluttu työvuoro.
+           HUOM! Vapaapäivä (=VP) näkyy työvuorolistassa tyhjänä ruutuna.
+           
+        </p>
+        
+        
+            <table class="table table-striped table-bordered">
+
+                <thead>
+                    <tr>
+                        <th><label>PVM /</label>  <label>HENKILÖ</label></th>
+                       
+                            <th></th>
+                        
+                    </tr>
+
+                </thead> 
+
+                <tbody>
+                    
+                    <tr th:each="emp : ${employees}">
+
+                       <td th:text="${emp.surname}">Name</td>
+                        
+                                <td class="suunniteltava" th:each="tasks : ${emp.tasks}">
+                                    
+                                       
+                                    
+                                </td>
+                           
+                               
+                     
+                    </tr>   
+                   
+
+                </tbody>
+
+
+            </table>
+             
+    </body>
+</html>

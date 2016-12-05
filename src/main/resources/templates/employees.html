@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Employees</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        
+        
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+          <h1>TYÖNTEKIJÄT</h1>
+
+            <p>
+                <a th:href="@{/employees/new}"  class="btn btn-success">Lisää työntekijä</a>
+            </p>
+
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Etunimi</th>
+                <th>Sukunimi</th>
+                <th>Puhelin</th>       
+              </tr>
+            </thead>
+
+            <tbody>
+                
+                  <tr th:each="employee : ${employees}">
+                    <td><a th:href="@{/employees/{id} (id=${employee.id})}" th:text="${employee.forename}"></a></td>
+                    <td><a th:href="@{/employees/{id} (id=${employee.id})}" th:text="${employee.surname}"></a></td>
+                    <td></td>
+                   
+                    <th><form th:method="DELETE" th:action="@{/employees/{id} (id=${employee.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form></th>
+                     
+                  </tr>
+               
+            </tbody>
+          </table>
+        
+    </body>    
+</html>

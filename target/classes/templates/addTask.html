@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Addtask</title>
+        <meta charset="UTF-8"/>
+       
+    </head>
+    <body>
+        
+          
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+        
+        <div class="col-md-6">
+    
+            <h1>Lisää työvuoro</h1>
+    
+                <form action="#"  method="POST" th:action="@{/tasks}" th:object="${task}">
+
+                      <div class="form-group">
+                          <label>Tunnus</label>
+                          <input type="text" th:field="*{name}" class="form-control" />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Alkuaika</label>
+                        <input type="time" th:field="*{startTime}" class="form-control" />
+                      </div>
+                    
+                      <div class="form-group">
+                        <label>Loppuaika</label>
+                        <input type="time" th:field="*{endTime}" class="form-control" />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Lisätietoja</label>
+                        <textarea th:field="*{information}" class="form-control"></textarea>
+                      </div>
+
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Tallenna</button>
+                        <a th:href="@{/tasks}" class="btn btn-danger">Peruuta</a>
+                      </div>
+
+                </form>
+
+                
+                    <div class="alert alert-danger">
+                        <ul>
+                            
+                            <li>error</li>
+                            
+                        </ul>
+                    </div>
+                
+
+        </div>  
+    
+    </body>
+    
+</html>
