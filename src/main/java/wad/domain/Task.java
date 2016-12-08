@@ -9,6 +9,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
@@ -17,7 +19,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 public class Task extends AbstractPersistable <Long>{
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
       
     @Length(min = 1, max = 15)

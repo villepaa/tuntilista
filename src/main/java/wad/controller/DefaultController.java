@@ -12,21 +12,16 @@ import wad.repository.TaskRepository;
 @Controller
 public class DefaultController {
     
-//      @Autowired
-//    private EmployeeRepository employeeRepository;
-//    
-//     @Autowired
-//    private TaskRepository taskRepository;
-//    
-//     @PostConstruct
-//    public void init() {
-//        Task t = new Task();
-//        Task ta = new Task();
-//        t.setEndTime(LocalTime.MIN);
-//    }
+
     
     @RequestMapping("*")
     public String handleDefault() {
         return "home";
+    }
+    
+    @RequestMapping("/403")
+    public String showAccesDenied(){
+        
+        return "denied";
     }
 }

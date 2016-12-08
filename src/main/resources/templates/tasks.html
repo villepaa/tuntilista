@@ -3,6 +3,11 @@
     <head>
         <title>Tasks</title>
         <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
     </head>
     <body>
         
@@ -31,7 +36,7 @@
             <tbody>
                 
                   <tr th:each="task : ${tasks}">
-                    <td><a href="@{/tasks/{id}}" th:text="${task.name}">id</a></td>
+                    <td><a th:href="@{/tasks/{id} (id = ${task.id})}" th:text="${task.name}">id</a></td>
                     <td th:text="${task.startTime}">alku</td>
                     <td th:text="${task.endTime}">loppu</td>
                   

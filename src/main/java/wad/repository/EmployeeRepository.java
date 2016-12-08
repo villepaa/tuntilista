@@ -8,4 +8,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
     Employee findBySurname(String surname);
     
+    Employee findByUsername(String username);
 }

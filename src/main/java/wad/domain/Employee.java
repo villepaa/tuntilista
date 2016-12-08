@@ -7,6 +7,9 @@ import java.util.Objects;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -18,6 +21,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Employee extends AbstractPersistable<Long> implements Comparable <Employee> {
     
     @Id
+     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     @Length(min = 1, max = 30)
@@ -29,6 +33,11 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @Length(min = 1, max = 30)
     private String address;
     
+    @Length(min = 1, max = 10)
+    private String username;
+    
+    @Length(min = 1, max = 15)
+    private String password;
     
     private String phoneNumber;
     
@@ -38,6 +47,26 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @ElementCollection
     @CollectionTable(name="qualifications")
     private List<String> qualifications;
+    
+    @ElementCollection
+    @CollectionTable(name="userroles")
+    private List<String> userRoles;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     
 
@@ -89,6 +118,15 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
         this.qualifications = qualifications;
     }
 
+    public List<String> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<String> userRoles) {
+        this.userRoles = userRoles;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -115,7 +153,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     
     @Override
     public int compareTo(Employee o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.id.compareTo(o.id);
     }
 
     public Long getId() {

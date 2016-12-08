@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: wad.controller.PlanControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 sec - in wad.controller.PlanControllerTest

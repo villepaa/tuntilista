@@ -3,6 +3,11 @@
     <head>
         <title>Employees</title>
         <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
     </head>
     <body>
         
@@ -13,7 +18,7 @@
         
           <h1>TYÖNTEKIJÄT</h1>
 
-            <p>
+          <p sec:authorize="hasAuthority('ADMIN')">
                 <a th:href="@{/employees/new}"  class="btn btn-success">Lisää työntekijä</a>
             </p>
 

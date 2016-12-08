@@ -3,6 +3,11 @@
     <head>
         <title>Home</title>
         <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
     </head>
     <body>
         
@@ -18,22 +23,14 @@
                     <h3>Valitse toiminto:</h3> 
 
                    
-
-                    <div class="dropdown">   
-
-                         <button class="btn btn-lg dropdown-toggle" type="button" data-toggle="dropdown" >
-                            Toiminnot
-                            <span class="caret"></span>
-                        </button>
-
-                        <ul class="dropdown-menu">
-                             <li><a class="dropdown-item" href=""></a></li>
-                            <li><a class="dropdown-item" href=""></a></li>
-                            <li><a class="dropdown-item" href=""></a></li>
+                        <ul >
+                             <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN')"><a class="btn" th:href="@{/employees}">Työntekijät</a></li>
+                             <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN')"><a class="btn" th:href="@{/tasks}">Työvuorot</a></li>
+                             <li><a class="btn" th:href="@{/plans}">Suunnitelma</a></li>
                         </ul>
 
 
-                    </div>
+                    
                 </div>
 
 
