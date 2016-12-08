@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultSecurityConfiguration.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tuntilista</a> &gt; <a href="index.source.html" class="el_package">wad.config</a> &gt; <span class="el_source">DefaultSecurityConfiguration.java</span></div><h1>DefaultSecurityConfiguration.java</h1><pre class="source lang-java linenums">package wad.config;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Profile(&quot;test&quot;)
+@Configuration
+@EnableWebSecurity
+<span class="fc" id="L15">public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {</span>
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // sallitaan h2-konsolin käyttö
+<span class="fc" id="L20">        http.csrf().disable();</span>
+<span class="fc" id="L21">        http.headers().frameOptions().sameOrigin();</span>
+        
+<span class="fc" id="L23">        http.authorizeRequests()</span>
+<span class="fc" id="L24">                .antMatchers(&quot;/h2-console/*&quot;).permitAll()</span>
+                
+<span class="fc" id="L26">                .antMatchers(&quot;/plans&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN,READER&quot;) </span>
+<span class="fc" id="L27">                .antMatchers(&quot;/tasks&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;) </span>
+<span class="fc" id="L28">                .antMatchers(&quot;/employees/new&quot;).hasAnyAuthority(&quot;ADMIN&quot;)</span>
+<span class="fc" id="L29">                .antMatchers(&quot;/employees&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;)</span>
+<span class="fc" id="L30">                .anyRequest().authenticated().and()</span>
+<span class="fc" id="L31">                .exceptionHandling().accessDeniedPage(&quot;/403&quot;);</span>
+                
+                
+                
+<span class="fc" id="L35">        http.formLogin()</span>
+<span class="fc" id="L36">                .permitAll();</span>
+<span class="fc" id="L37">        http.logout()</span>
+<span class="fc" id="L38">                .permitAll();</span>
+<span class="fc" id="L39">    }</span>
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+<span class="fc" id="L43">        auth.inMemoryAuthentication()</span>
+<span class="fc" id="L44">                .withUser(&quot;admin&quot;).password(&quot;admin&quot;).authorities(&quot;ADMIN&quot;);</span>
+                
+                
+<span class="fc" id="L47">        auth.inMemoryAuthentication()</span>
+<span class="fc" id="L48">                .withUser(&quot;reader&quot;).password(&quot;reader&quot;).authorities(&quot;READER&quot;);</span>
+<span class="fc" id="L49">        auth.inMemoryAuthentication()</span>
+<span class="fc" id="L50">                .withUser(&quot;planner&quot;).password(&quot;planner&quot;).authorities(&quot;PLANNER&quot;);</span>
+<span class="fc" id="L51">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

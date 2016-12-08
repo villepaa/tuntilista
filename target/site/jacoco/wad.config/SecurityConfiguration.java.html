@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SecurityConfiguration.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tuntilista</a> &gt; <a href="index.source.html" class="el_package">wad.config</a> &gt; <span class="el_source">SecurityConfiguration.java</span></div><h1>SecurityConfiguration.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package wad.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import wad.service.EmployeeUserRoleService;
+
+
+@Profile(&quot;production&quot;)
+@Configuration
+@EnableWebSecurity
+<span class="nc" id="L24">public class SecurityConfiguration extends WebSecurityConfigurerAdapter{</span>
+    
+    @Autowired
+    private EmployeeUserRoleService userRoleService;
+    
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+       
+<span class="nc" id="L32">        http.headers().frameOptions().sameOrigin();</span>
+        
+<span class="nc" id="L34">        http.authorizeRequests()</span>
+                
+                
+<span class="nc" id="L37">                .antMatchers(&quot;/plan&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN,READER&quot;) </span>
+<span class="nc" id="L38">                .antMatchers(&quot;/tasks&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;) </span>
+<span class="nc" id="L39">                .antMatchers(&quot;/employees&quot;).hasAnyAuthority(&quot;ADMIN&quot;)</span>
+<span class="nc" id="L40">                .anyRequest().authenticated();</span>
+        
+<span class="nc" id="L42">        http.formLogin()</span>
+<span class="nc" id="L43">                .permitAll();</span>
+<span class="nc" id="L44">        http.logout()</span>
+<span class="nc" id="L45">                .permitAll();</span>
+<span class="nc" id="L46">    }</span>
+    
+     @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+<span class="nc" id="L50">        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());</span>
+<span class="nc" id="L51">    }</span>
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+<span class="nc" id="L55">        return new BCryptPasswordEncoder();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

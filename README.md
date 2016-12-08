@@ -2,9 +2,9 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni]()
+* [Linkki sovellukseeni](https://secure-tor-87301.herokuapp.com/)
 
-* [Linkki dokumentaatiooni]()
+* [Linkki dokumentaatiooni](https://github.com/villepaa/tuntilista/blob/master/documentation/dokumentaatio.pdf)
 
 
 
