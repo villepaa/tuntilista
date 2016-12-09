@@ -24,8 +24,18 @@ public class EmployeeUserRoleService implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       
-        
+        List<Employee> emps = employeeRepository.findAll();
+        if(emps.isEmpty()){
+            ArrayList<String> r = new ArrayList<>();
+            r.add("ADMIN");
+            Employee emp = new Employee();
+            emp.setForename("def");
+            emp.setSurname("def");
+            emp.setUsername("def");
+            emp.setPassword("def");
+            emp.setUserRoles(r);
+            employeeRepository.save(emp);
+        }
         Employee employee = employeeRepository.findByUsername(username);
         if (employee== null) {
             throw new UsernameNotFoundException("No such user: " + username);
