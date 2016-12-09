@@ -36,7 +36,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @Length(min = 1, max = 10)
     private String username;
     
-    @Length(min = 1, max = 15)
+    @Length(min = 1)
     private String password;
     
     private String phoneNumber;

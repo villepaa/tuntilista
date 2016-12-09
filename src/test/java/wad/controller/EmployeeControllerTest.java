@@ -67,6 +67,7 @@ public class EmployeeControllerTest {
 
    @Test
     public void addEmployee() throws Exception{
+        
         mockMvc.perform(post("/employees")
                        .param("forname", "Ville")
                        .param("surname", "Paavola")
@@ -74,6 +75,8 @@ public class EmployeeControllerTest {
                        .param("phoneNumber", "040-3948398")
                        .param("email", "ville.paavola@gmail.com")
                        .param("qualification","")
+                       .param("username","eka")
+                       .param("password","vekara")
                        
                 ).andDo(print())
                 .andExpect(redirectedUrl("/employees"));
@@ -97,6 +100,8 @@ public class EmployeeControllerTest {
                        .param("phoneNumber", "040-3948398")
                        .param("email", "ville.paavola@gmail.com")
                        .param("qualification","")
+                       .param("username","eka")
+                       .param("password","vekara")
                 )
                 .andExpect(redirectedUrl("/employees"));
         
