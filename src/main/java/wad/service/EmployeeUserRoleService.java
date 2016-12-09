@@ -7,6 +7,7 @@ package wad.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class EmployeeUserRoleService implements UserDetailsService{
     @Autowired
     private EmployeeRepository employeeRepository;
     
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<Employee> emps = employeeRepository.findAll();
