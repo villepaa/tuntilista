@@ -40,7 +40,7 @@
                     <td th:text="${task.startTime}">alku</td>
                     <td th:text="${task.endTime}">loppu</td>
                   
-                    <th><form th:method="DELETE" th:action="@{/tasks/{id} (id=${task.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form></th>
+                    <th><form th:unless="${task.name == 'VP'}" th:method="DELETE" th:action="@{/tasks/{id} (id=${task.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form></th>
                   </tr>
                 
             </tbody>

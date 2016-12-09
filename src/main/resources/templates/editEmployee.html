@@ -56,7 +56,7 @@
                       </div>
                       <div class="form-group" sec:authorize="hasAuthority('ADMIN')">
                         <label>Salasana</label>
-                        <input type="password" th:field="*{password}" name="password" class="form-control" value="${employee.password}" />
+                        <input type="text" th:field="*{password}" name="password" class="form-control" value="${employee.password}" />
                         
                         <p class="alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Virheviesti</p>
                       </div>

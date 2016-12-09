@@ -24,7 +24,7 @@
                             
                                 <li th:each="plan : ${plans}">
                                     <a class="dropdown-item" th:href="@{/plans/{id} (id = ${plan.id})}" th:text="${plan.name}">plan</a>
-                                    <form th:method="DELETE" th:action="@{/plans/{id} (id = ${plan.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form>
+                                    <form sec:authorize="hasAnyAuthority('PLANNER','ADMIN')" th:method="DELETE" th:action="@{/plans/{id} (id = ${plan.id})} "><input type="submit" class="btn btn-danger btn-sm" value="Poista"/></form>
                                 </li>
                             
                         </ul>

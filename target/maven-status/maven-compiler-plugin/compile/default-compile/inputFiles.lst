@@ -13,7 +13,6 @@
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/domain/Task.java
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/config/WebConfiguration.java
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/domain/PlannedTask.java
-/home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/config/WebMvcConfiguration.java
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/TuntilistaApplication.java
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/config/SecurityConfiguration.java
 /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista/src/main/java/wad/domain/Employee.java

@@ -5,6 +5,7 @@ package wad.controller;
 import java.util.ArrayList;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,12 +25,14 @@ public class EmployeeController {
     
      @Autowired
     private TaskRepository taskRepository;
+     
     
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
     public String listEmployees(Model model){
         model.addAttribute("employees", employeeRepository.findAll());
         return "employees";
-    } 
+    }
+    
     
     @RequestMapping(value = "/employees/new", method = RequestMethod.GET)
     public String showAddForm(Model model){
@@ -40,6 +43,7 @@ public class EmployeeController {
        
         return "addEmployee";
     }
+    
     
     @RequestMapping(value = "/employees", method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
@@ -61,11 +65,11 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.PUT)
     public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
-         if(bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
         }
-        Employee updated = employeeRepository.getOne(id);
+        Employee updated = employeeRepository.findOne(id);
         updated.setForename(emp.getForename());
         updated.setSurname(emp.getSurname());
         updated.setEmail(emp.getEmail());
@@ -78,7 +82,7 @@ public class EmployeeController {
         employeeRepository.save(updated);
         return "redirect:/employees";
     }
-    
+   
      @RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
     public String deleteEmployee(@PathVariable Long id){
         employeeRepository.delete(id);

@@ -24,6 +24,21 @@ public class EmployeeUserRoleService implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<Employee> test = employeeRepository.findAll();
+         List<SimpleGrantedAuthority> def = new ArrayList<>();
+         def.add(new SimpleGrantedAuthority("ADMIN"));
+        if(test.isEmpty()){
+             return new org.springframework.security.core.userdetails.User(
+            "defa",
+            "Tskip9819",
+            true,
+            true,
+            true,
+            true,
+            def);
+        }
+        
+        
         Employee employee = employeeRepository.findByUsername(username);
         if (employee== null) {
             throw new UsernameNotFoundException("No such user: " + username);

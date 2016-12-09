@@ -59,7 +59,7 @@ public class TaskController {
         if(bindingResult.hasErrors()){
             return "editTask";
         }
-        Task updated = taskRepository.getOne(id);
+        Task updated = taskRepository.findOne(id);
         updated.setName(task.getName());
         updated.setStartTime(task.getStartTime());
         updated.setEndTime(task.getEndTime());
@@ -70,7 +70,11 @@ public class TaskController {
     
      @RequestMapping(value = "/tasks/{id}", method = RequestMethod.DELETE)
     public String deleteTask(@PathVariable Long id){
-        taskRepository.delete(id);
+        Task t = taskRepository.findOne(id);
+        if(!t.getName().equals("VP")){
+            taskRepository.delete(id);
+        }
+            
         return "redirect:/tasks";
     }
 }

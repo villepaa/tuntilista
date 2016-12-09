@@ -1,5 +1,5 @@
 Command line:
-"travis encrypt 8e8d530f-9596-47a4-883e-bfa1f3bfbe5f --add deploy.api_key"
+"travis version"
 
 
    ________                                 __
@@ -26,7 +26,7 @@ Command line:
 
      There is absolutely no warranty on any results obtained from TRAVIS.
 
-  #  Running on dhcp-asv-87 at Thu Dec  8 22:09:23 2016 (PID 4451).
+  #  Running on dhcp-asv-87 at Thu Dec  8 23:05:28 2016 (PID 12051).
   #  Running in /home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista
   #  Source code version: Jan 17 2014.
   #  Compiled at Jan 19 2014 05:12:11.
@@ -42,7 +42,7 @@ Command line:
 
     Loading configuration from /home/villepaa/.travis.conf ...
 
-Unknown parameter: "encrypt".
+Unknown parameter: "version".
 
     List of supported command line options:
 

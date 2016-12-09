@@ -30,7 +30,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @Length(min = 1, max = 30)
     private String surname;
     
-    @Length(min = 1, max = 30)
+    
     private String address;
     
     @Length(min = 1, max = 10)

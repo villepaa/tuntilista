@@ -50,7 +50,7 @@
                                     
                                     <input hidden="hidden" type="text" name="employeeId" th:value="${planEmployee.id}"></input>
                                     <input hidden="hidden" type="text" name="ptaskId" th:value="${ptask.id}"></input>
-                                    <div class="dropdown suunnittelu" th:id="'Task'+${ptask.id}">
+                                    <div class="dropdown suunnittelu" th:id="'Task'+${ptask.id}" sec:authorize="hasAnyAuthority('PLANNER','ADMIN')">
                                         <button class="btn-sm" type="button" data-toggle="dropdown"></button>
                                             <ul class="dropdown-menu">
                                                 <li th:each="q : ${planEmployee.employee.qualifications}"><input class="dropdown-item" type='submit' name='taskName' th:text="${q}" th:value="${q}">Qual</input></li>

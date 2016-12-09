@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -47,12 +48,13 @@ public class PlanController {
         model.addAttribute("plan", new Plan());
         return "plans";
     }
-    
+   
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.DELETE)
     public String showPlan(@PathVariable Long id){
         planRepository.delete(id);
         return "redirect:/plans";
     }
+    
     
     @Transactional
     @RequestMapping(value = "/plans", method = RequestMethod.POST)
@@ -95,6 +97,7 @@ public class PlanController {
         planRepository.save(p);
         return "redirect:/plans";
     }
+    
     
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.GET)
     public String showPlan(Model model,@PathVariable Long id){
