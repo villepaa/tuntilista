@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PlanController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tuntilista</a> &gt; <a href="index.source.html" class="el_package">wad.controller</a> &gt; <span class="el_source">PlanController.java</span></div><h1>PlanController.java</h1><pre class="source lang-java linenums">
+package wad.controller;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import java.util.Collections;
+
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import wad.domain.Employee;
+import wad.domain.Plan;
+import wad.domain.PlannedEmployee;
+import wad.domain.PlannedTask;
+import wad.domain.Task;
+import wad.repository.EmployeeRepository;
+import wad.repository.PlanRepository;
+import wad.repository.TaskRepository;
+
+
+@Controller
+<span class="fc" id="L33">public class PlanController {</span>
+    
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    
+    @Autowired
+    private TaskRepository taskRepository;
+     
+    @Autowired
+    private PlanRepository planRepository;
+    
+    @RequestMapping(value = &quot;/plans&quot;, method = RequestMethod.GET)
+    public String showPlans(Model model){
+<span class="fc" id="L46">        model.addAttribute(&quot;plans&quot;,planRepository.findAll());</span>
+<span class="fc" id="L47">        model.addAttribute(&quot;employees&quot;,employeeRepository.findAll());</span>
+<span class="fc" id="L48">        model.addAttribute(&quot;plan&quot;, new Plan());</span>
+<span class="fc" id="L49">        return &quot;plans&quot;;</span>
+    }
+   
+    @RequestMapping(value = &quot;/plans/{id}&quot;, method = RequestMethod.DELETE)
+    public String showPlan(@PathVariable Long id){
+<span class="nc" id="L54">        planRepository.delete(id);</span>
+<span class="nc" id="L55">        return &quot;redirect:/plans&quot;;</span>
+    }
+    
+    
+    @Transactional
+    @RequestMapping(value = &quot;/plans&quot;, method = RequestMethod.POST)
+    public String createPlan(@RequestParam String startDate, @RequestParam String endDate,
+                             @RequestParam List&lt;Long&gt; chosen){
+<span class="nc" id="L63">        Plan p = new Plan();</span>
+               
+<span class="nc" id="L65">        p.setStartDate(LocalDate.parse(startDate));</span>
+<span class="nc" id="L66">        p.setEndDate(LocalDate.parse(endDate));</span>
+<span class="nc" id="L67">        p.setName(startDate + &quot; - &quot; + endDate);</span>
+        
+<span class="nc" id="L69">        Set &lt;PlannedEmployee&gt; emps = new TreeSet&lt;&gt;();</span>
+
+<span class="nc" id="L71">        LocalDate dStart = LocalDate.parse(startDate);</span>
+<span class="nc" id="L72">        LocalDate dEnd = LocalDate.parse(endDate).plusDays(1);</span>
+        LocalDate d;
+<span class="nc" id="L74">        Task t = taskRepository.findByName(&quot;VP&quot;);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for(Long id: chosen){</span>
+<span class="nc" id="L76">                d = dStart;</span>
+<span class="nc" id="L77">                Employee e = employeeRepository.findOne(id);</span>
+<span class="nc" id="L78">                PlannedEmployee pEmp = new PlannedEmployee();</span>
+<span class="nc" id="L79">                pEmp.setPlan(p);</span>
+<span class="nc" id="L80">                pEmp.setEmployee(e);</span>
+                
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                while(d.isBefore(dEnd)){</span>
+<span class="nc" id="L83">                    PlannedTask pt = new PlannedTask();</span>
+<span class="nc" id="L84">                    pt.setDateof(d);</span>
+<span class="nc" id="L85">                    pt.setEmployee(pEmp);</span>
+<span class="nc" id="L86">                    pt.setTask(t);</span>
+<span class="nc" id="L87">                    pEmp.addTask(pt);</span>
+<span class="nc" id="L88">                    d = d.plusDays(1);</span>
+<span class="nc" id="L89">                }</span>
+<span class="nc" id="L90">                emps.add(pEmp);</span>
+<span class="nc" id="L91">        }      </span>
+        
+        
+        
+<span class="nc" id="L95">        p.setEmployees(emps);</span>
+        
+<span class="nc" id="L97">        planRepository.save(p);</span>
+<span class="nc" id="L98">        return &quot;redirect:/plans&quot;;</span>
+    }
+    
+    
+    @RequestMapping(value = &quot;/plans/{id}&quot;, method = RequestMethod.GET)
+    public String showPlan(Model model,@PathVariable Long id){
+<span class="nc" id="L104">        Plan plan = planRepository.findOne(id);</span>
+<span class="nc" id="L105">        ArrayList&lt;PlannedTask&gt; tasks = new ArrayList&lt;&gt;(plan.getEmployees().iterator().next().getTasks());</span>
+<span class="nc" id="L106">        Collections.sort(tasks);</span>
+<span class="nc" id="L107">        model.addAttribute(&quot;plan&quot;,plan);</span>
+<span class="nc" id="L108">        model.addAttribute(&quot;dates&quot;,tasks);</span>
+<span class="nc" id="L109">        return &quot;plan&quot;;</span>
+    }
+    
+    @RequestMapping(value = &quot;/plans/{id}&quot;, method = RequestMethod.PUT)
+    public String updatePlan(Model model,@RequestParam Long employeeId,@RequestParam Long ptaskId, 
+                             @RequestParam String taskName, @PathVariable Long id){
+<span class="nc" id="L115">        Plan plan = planRepository.findOne(id);</span>
+<span class="nc" id="L116">        Set &lt;PlannedEmployee&gt; emps = plan.getEmployees();</span>
+<span class="nc" id="L117">        PlannedEmployee newEmp = new PlannedEmployee();</span>
+<span class="nc" id="L118">        PlannedTask newT = new PlannedTask();</span>
+<span class="nc" id="L119">        int index = 0;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        for(PlannedEmployee pEmp : emps){</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if(pEmp.getId().equals(employeeId)){</span>
+<span class="nc" id="L122">                newEmp = pEmp;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                for(int i= 0;i&lt;newEmp.getTasks().size();i++){</span>
+<span class="nc" id="L124">                    PlannedTask t = newEmp.getTasks().get(i);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                    if(t.getId().equals(ptaskId)){</span>
+<span class="nc" id="L126">                        newT = t;</span>
+<span class="nc" id="L127">                        newT.setTask(taskRepository.findByName(taskName));</span>
+<span class="nc" id="L128">                        index = i;</span>
+                }
+        }
+            }
+<span class="nc" id="L132">        }</span>
+<span class="nc" id="L133">        newEmp.getTasks().remove(index);</span>
+<span class="nc" id="L134">        newEmp.addTask(newT);</span>
+<span class="nc" id="L135">        plan.addEmployee(newEmp);</span>
+<span class="nc" id="L136">        planRepository.save(plan);</span>
+        
+<span class="nc" id="L138">        return &quot;redirect:/plans/&quot; + plan.getId();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
