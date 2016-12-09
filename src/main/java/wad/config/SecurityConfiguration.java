@@ -50,9 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     
      @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("admin").password("admin").authorities(new SimpleGrantedAuthority("ADMIN"));
-        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
+       auth.inMemoryAuthentication()
+                .withUser("admin").password("admin").authorities(new SimpleGrantedAuthority("ADMIN"));
+//        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
