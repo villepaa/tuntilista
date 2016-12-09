@@ -82,8 +82,8 @@ public class EmployeeController {
         updated.setAddress(emp.getAddress());
         updated.setPhoneNumber(emp.getPhoneNumber());
         updated.setUserRoles(emp.getUserRoles());
-        
         updated.setQualifications(emp.getQualifications());
+        
         employeeRepository.save(updated);
         return "redirect:/employees";
     }

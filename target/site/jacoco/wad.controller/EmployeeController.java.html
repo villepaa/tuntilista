@@ -82,8 +82,8 @@ import wad.repository.TaskRepository;
 <span class="nc" id="L82">        updated.setAddress(emp.getAddress());</span>
 <span class="nc" id="L83">        updated.setPhoneNumber(emp.getPhoneNumber());</span>
 <span class="nc" id="L84">        updated.setUserRoles(emp.getUserRoles());</span>
+<span class="nc" id="L85">        updated.setQualifications(emp.getQualifications());</span>
         
-<span class="nc" id="L86">        updated.setQualifications(emp.getQualifications());</span>
 <span class="nc" id="L87">        employeeRepository.save(updated);</span>
 <span class="nc" id="L88">        return &quot;redirect:/employees&quot;;</span>
     }
