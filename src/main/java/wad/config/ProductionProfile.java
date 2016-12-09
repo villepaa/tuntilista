@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("production")
 public class ProductionProfile {
-    
-    
+   
     
     @Bean
     public BasicDataSource dataSource() throws URISyntaxException {

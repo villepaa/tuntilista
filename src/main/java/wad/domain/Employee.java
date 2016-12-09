@@ -44,11 +44,11 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @Email
     private String email;
     
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="qualifications")
     private List<String> qualifications;
     
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="userroles")
     private List<String> userRoles;
 
