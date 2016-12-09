@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PlannedTask.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tuntilista</a> &gt; <a href="index.source.html" class="el_package">wad.domain</a> &gt; <span class="el_source">PlannedTask.java</span></div><h1>PlannedTask.java</h1><pre class="source lang-java linenums">
+package wad.domain;
+
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+<span class="fc" id="L16">public class PlannedTask extends AbstractPersistable&lt;Long&gt; implements Comparable&lt;PlannedTask&gt;{</span>
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    
+    private LocalDate dateof;
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Task task;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PlannedEmployee plannedEmployee;
+    
+   
+
+    public PlannedEmployee getEmployee() {
+<span class="nc" id="L35">        return plannedEmployee;</span>
+    }
+
+    public void setEmployee(PlannedEmployee employee) {
+<span class="nc" id="L39">        this.plannedEmployee = employee;</span>
+<span class="nc" id="L40">    }</span>
+    
+    
+
+    public Task getTask() {
+<span class="nc" id="L45">        return task;</span>
+    }
+
+    public void setTask(Task task) {
+<span class="nc" id="L49">        this.task = task;</span>
+<span class="nc" id="L50">    }</span>
+
+    public LocalDate getDateof() {
+<span class="nc" id="L53">        return dateof;</span>
+    }
+
+    public void setDateof(LocalDate dateof) {
+<span class="nc" id="L57">        this.dateof = dateof;</span>
+<span class="nc" id="L58">    }</span>
+
+        
+    
+    public Long getId() {
+<span class="nc" id="L63">        return id;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L68">        int hash = 3;</span>
+<span class="nc" id="L69">        hash = 67 * hash + Objects.hashCode(this.id);</span>
+<span class="nc" id="L70">        hash = 67 * hash + Objects.hashCode(this.dateof);</span>
+<span class="nc" id="L71">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L77">            return false;</span>
+        }
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L80">            return false;</span>
+        }
+<span class="nc" id="L82">        final PlannedTask other = (PlannedTask) obj;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (!Objects.equals(this.id, other.id)) {</span>
+<span class="nc" id="L84">            return false;</span>
+        }
+      
+<span class="nc" id="L87">        return true;</span>
+    }
+
+    
+
+    @Override
+    public int compareTo(PlannedTask o) {
+       
+<span class="nc" id="L95">        return this.id.compareTo(o.getId());</span>
+       
+    }
+
+   
+    
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

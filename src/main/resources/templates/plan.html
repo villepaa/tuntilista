@@ -19,7 +19,7 @@
         
         <h1 th:text="${plan.name}"> </h1>
         
-        <p>Työvuoron lisääminen työntekijälle: 1. Liikuta hiiren osoitin halutun päivämäärän päälle ja paina painiketta. 2. Valitse avautuvasta listasta haluttu työvuoro.
+        <p sec:authorize="hasAnyAuthority('PLANNER','ADMIN')">Työvuoron lisääminen työntekijälle: 1. Liikuta hiiren osoitin halutun päivämäärän päälle ja paina painiketta. 2. Valitse avautuvasta listasta haluttu työvuoro.
            HUOM! Vapaapäivä (=VP) näkyy työvuorolistassa tyhjänä ruutuna.
            
         </p>
