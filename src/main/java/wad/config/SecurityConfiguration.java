@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
        auth.inMemoryAuthentication()
                 .withUser("admin").password("admin").authorities(new SimpleGrantedAuthority("ADMIN"));
-        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
+       auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

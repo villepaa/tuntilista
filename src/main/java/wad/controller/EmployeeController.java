@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,8 @@ public class EmployeeController {
      @Autowired
     private TaskRepository taskRepository;
      
+    @Autowired
+    private PasswordEncoder encoder; 
     
      
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
@@ -52,6 +55,7 @@ public class EmployeeController {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
         }
+        emp.setPassword(encoder.encode(emp.getPassword()));
         employeeRepository.save(emp);
         return "redirect:/employees";
     }
@@ -77,7 +81,7 @@ public class EmployeeController {
         updated.setAddress(emp.getAddress());
         updated.setPhoneNumber(emp.getPhoneNumber());
         updated.setUserRoles(emp.getUserRoles());
-        updated.setPassword(emp.getPassword());
+        updated.setPassword(encoder.encode(emp.getPassword()));
         updated.setUsername(emp.getUsername());
         updated.setQualifications(emp.getQualifications());
         employeeRepository.save(updated);

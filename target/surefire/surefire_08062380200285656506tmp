@@ -1,0 +1,6 @@
+#surefire_0
+#Fri Dec 09 14:52:20 EET 2016
+maven.ext.class.path=/home/villepaa/tmcbeans/java/maven-nblib/netbeans-eventspy.jar
+user.dir=/home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista
+localRepository=/home/villepaa/.m2/repository
+basedir=/home/villepaa/NetBeansProjects/tuntilista_Spring_boot/Tuntilista
