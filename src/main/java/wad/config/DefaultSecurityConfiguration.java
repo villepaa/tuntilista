@@ -13,12 +13,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import wad.service.EmployeeUserRoleService;
 
 @Profile("default")
 @Configuration
 @EnableWebSecurity
 public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private EmployeeUserRoleService userRoleService;
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // sallitaan h2-konsolin käyttö
@@ -53,6 +57,7 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("reader").password("reader").authorities(new SimpleGrantedAuthority("READER"));
         auth.inMemoryAuthentication()
                 .withUser("planner").password("planner").authorities(new SimpleGrantedAuthority("PLANNER"));
+        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
     }
     
     @Bean

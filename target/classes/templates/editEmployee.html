@@ -48,18 +48,8 @@
                         <input type="text" th:field="*{email}" class="form-control" value="${employee.email}" />
                         <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
                        </div>
-                        <div class="form-group" sec:authorize="hasAuthority('ADMIN')">
-                        <label>Käyttäjänimi</label>
-                        <input   type="text" th:field="*{username}" class="form-control" value="${employee.username}" />
-                       
-                        <p class="alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Virheviesti</p>
-                      </div>
-                      <div class="form-group" sec:authorize="hasAuthority('ADMIN')">
-                        <label>Salasana</label>
-                        <input type="text" th:field="*{password}" name="password" class="form-control" value="${employee.password}" />
                         
-                        <p class="alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Virheviesti</p>
-                      </div>
+                       
                                      
                       <div class="form-group">
 

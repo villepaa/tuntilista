@@ -55,7 +55,8 @@ public class EmployeeController {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
         }
-        emp.setPassword(encoder.encode(emp.getPassword()));
+        String encoded = encoder.encode(emp.getPassword());
+        emp.setPassword(encoded);
         employeeRepository.save(emp);
         return "redirect:/employees";
     }
@@ -81,8 +82,7 @@ public class EmployeeController {
         updated.setAddress(emp.getAddress());
         updated.setPhoneNumber(emp.getPhoneNumber());
         updated.setUserRoles(emp.getUserRoles());
-        updated.setPassword(encoder.encode(emp.getPassword()));
-        updated.setUsername(emp.getUsername());
+        
         updated.setQualifications(emp.getQualifications());
         employeeRepository.save(updated);
         return "redirect:/employees";
