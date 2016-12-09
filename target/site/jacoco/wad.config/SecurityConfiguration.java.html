@@ -23,8 +23,7 @@ import wad.service.EmployeeUserRoleService;
 @Profile(&quot;production&quot;)
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
-<span class="nc" id="L27">public class SecurityConfiguration extends WebSecurityConfigurerAdapter{</span>
+<span class="nc" id="L26">public class SecurityConfiguration extends WebSecurityConfigurerAdapter{</span>
     
     @Autowired
     private EmployeeUserRoleService userRoleService;
@@ -32,32 +31,34 @@ import wad.service.EmployeeUserRoleService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        
-<span class="nc" id="L35">        http.headers().frameOptions().sameOrigin();</span>
-        
-<span class="nc" id="L37">        http.authorizeRequests()</span>
+<span class="nc" id="L34">        http.headers().frameOptions().sameOrigin();</span>
+<span class="nc" id="L35">        http.csrf().disable();</span>
+<span class="nc" id="L36">        http.authorizeRequests()</span>
                 
                 
-<span class="nc" id="L40">                .antMatchers(&quot;/plan&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN,READER&quot;) </span>
-<span class="nc" id="L41">                .antMatchers(&quot;/tasks&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;) </span>
-<span class="nc" id="L42">                .antMatchers(&quot;/employees&quot;).hasAnyAuthority(&quot;ADMIN&quot;)</span>
-<span class="nc" id="L43">                .anyRequest().authenticated();</span>
+<span class="nc" id="L39">                .antMatchers(&quot;/plans&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN,READER&quot;) </span>
+<span class="nc" id="L40">                .antMatchers(&quot;/tasks&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;) </span>
+<span class="nc" id="L41">                .antMatchers(&quot;/employees/new&quot;).hasAnyAuthority(&quot;ADMIN&quot;)</span>
+<span class="nc" id="L42">                .antMatchers(&quot;/employees&quot;).hasAnyAuthority(&quot;PLANNER,ADMIN&quot;)</span>
+<span class="nc" id="L43">                .anyRequest().authenticated().and()</span>
+<span class="nc" id="L44">                .exceptionHandling().accessDeniedPage(&quot;/403&quot;);</span>
         
-<span class="nc" id="L45">        http.formLogin()</span>
-<span class="nc" id="L46">                .permitAll();</span>
-<span class="nc" id="L47">        http.logout()</span>
-<span class="nc" id="L48">                .permitAll();</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L46">        http.formLogin()</span>
+<span class="nc" id="L47">                .permitAll();</span>
+<span class="nc" id="L48">        http.logout()</span>
+<span class="nc" id="L49">                .permitAll();</span>
+<span class="nc" id="L50">    }</span>
     
      @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-<span class="nc" id="L53">        auth.inMemoryAuthentication()</span>
-<span class="nc" id="L54">            .withUser(&quot;admin&quot;).password(&quot;admin&quot;).authorities(new SimpleGrantedAuthority(&quot;ADMIN&quot;));</span>
-<span class="nc" id="L55">        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L54">       auth.inMemoryAuthentication()</span>
+<span class="nc" id="L55">                .withUser(&quot;admin&quot;).password(&quot;admin&quot;).authorities(new SimpleGrantedAuthority(&quot;ADMIN&quot;));</span>
+//        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
+<span class="nc" id="L57">    }</span>
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-<span class="nc" id="L60">        return new BCryptPasswordEncoder();</span>
+<span class="nc" id="L61">        return new BCryptPasswordEncoder();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

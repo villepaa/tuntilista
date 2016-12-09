@@ -23,7 +23,6 @@ import wad.service.EmployeeUserRoleService;
 @Profile("production")
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     
     @Autowired
@@ -33,14 +32,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
        
         http.headers().frameOptions().sameOrigin();
-        
+        http.csrf().disable();
         http.authorizeRequests()
                 
                 
-                .antMatchers("/plan").hasAnyAuthority("PLANNER,ADMIN,READER") 
+                .antMatchers("/plans").hasAnyAuthority("PLANNER,ADMIN,READER") 
                 .antMatchers("/tasks").hasAnyAuthority("PLANNER,ADMIN") 
-                .antMatchers("/employees").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated();
+                .antMatchers("/employees/new").hasAnyAuthority("ADMIN")
+                .antMatchers("/employees").hasAnyAuthority("PLANNER,ADMIN")
+                .anyRequest().authenticated().and()
+                .exceptionHandling().accessDeniedPage("/403");
         
         http.formLogin()
                 .permitAll();

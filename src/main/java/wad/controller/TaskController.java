@@ -1,11 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ Tämä kontrolleri huolehtii työvuorojen perustietojen luonnista ja ylläpidosta
  */
 package wad.controller;
 
-import java.time.LocalTime;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import wad.domain.Employee;
+
 import wad.domain.Task;
 import wad.repository.TaskRepository;
 
@@ -25,17 +23,23 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
     
+    // Listataan työvuorot
+    
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     public String listTasks(Model model){
         model.addAttribute("tasks",taskRepository.findAll());
         return "tasks";
     } 
     
+    // avataan työvuoron luonti näkymä
+    
     @RequestMapping(value = "/tasks/new", method = RequestMethod.GET)
     public String showAddForm(Model m){
         m.addAttribute("task", new Task());
         return "addTask";
     }
+    
+    // luodaan ja validoidaan työvuoro-olio
     
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
     public String createTask(@Valid @ModelAttribute Task task,BindingResult bindingResult){
@@ -47,6 +51,8 @@ public class TaskController {
         
         return "redirect:/tasks";
     }
+    
+    // haetaan työvuoron tiedot 
     
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
     public String showTask(Model model, @PathVariable Long id){

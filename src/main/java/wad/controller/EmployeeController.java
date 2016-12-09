@@ -1,11 +1,9 @@
 
 package wad.controller;
-
-
 import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +25,7 @@ public class EmployeeController {
     private TaskRepository taskRepository;
      
     
+     
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
     public String listEmployees(Model model){
         model.addAttribute("employees", employeeRepository.findAll());
@@ -38,9 +37,11 @@ public class EmployeeController {
     public String showAddForm(Model model){
         Employee employee = new Employee();
         employee.setQualifications(new ArrayList<>());
+        employee.setUserRoles(new ArrayList<>());
         model.addAttribute("employee",employee);
         model.addAttribute("tasks",taskRepository.findAll());
-       
+        
+        
         return "addEmployee";
     }
     
