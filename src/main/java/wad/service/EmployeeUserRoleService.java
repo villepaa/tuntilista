@@ -23,7 +23,7 @@ public class EmployeeUserRoleService implements UserDetailsService{
     @Autowired
     private EmployeeRepository employeeRepository;
     
-    @Transactional
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<Employee> emps = employeeRepository.findAll();
