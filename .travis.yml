@@ -1,7 +1,10 @@
 language: Java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 deploy:
   provider: heroku
   api_key:
-    secure: 
+    secure: lCNNpmR/LiPG6jZeBzMJvPOcNo1/86lWA54RalJTCJqKcshJGxmJs6xio/pm+QdwlantidbPwVs4gstygU7v1hOQsR/A3aUjfBk0FYrgAoNejEvoISdRRZBovx1RYxUnFjXFeIh5/acTzQmZeaZiN3QDlPzAFsCNtaZwk+2M9134uRUKSdI99MK81K1bQH7WAeTCsByIfdRv7EklP/gxMZXNknxFZsy2gaZMl3PfCU1p+niHhQsCOomnunKBpYkTjsWC6kKWMYX+HAhBUGGGyNj71vZA3dhxAClQY+PMOKRW2MSxkQe1EtqaTFZDZ+bH9RQsluA4OVDygucpwMmwtbFVzEMZA9vmYPJmbmjOAUE0qXDFiydMuLlQZ6dUlNh5Q2b9B2+QWK8wK9XE5kGT2YgPE428wcxV0RgCvfmq9XV8RZThNieqZRGdBdLuyBNKyYHaMF8BcOglQMVMToRyOiVSSayMhmSMGvJSNu9Gcep5kTGksCPffXpZMPbhkQzh5OX5klSEotoOZ6PjBgjJxcbnpgKd8GTKfVbOtrToQylePqGAcuwij0PwDVXzDqvk3hl/y44HprMK8oALpJuncqpnjBb2FST6dOpQmcoqfE9KXx84SbWfKoI41Np0R1MsaIKqRuiCON+34/IQIb2cv0Kx1voqFrA6s082JTEint4=
+  app: secure-tor-87301
+  on:
+    repo: villepaa/tuntilista
