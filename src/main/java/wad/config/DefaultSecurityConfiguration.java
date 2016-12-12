@@ -15,9 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import wad.service.EmployeeUserRoleService;
 
-@Profile("default")
+@Profile({"default"})
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -50,13 +51,20 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").authorities(new SimpleGrantedAuthority("ADMIN"));
+                .withUser("admin").password("admin")
+                    .authorities(new SimpleGrantedAuthority("ADMIN"));
+                    
                 
                 
         auth.inMemoryAuthentication()
-                .withUser("reader").password("reader").authorities(new SimpleGrantedAuthority("READER"));
+                .withUser("reader").password("reader")
+                    .authorities(new SimpleGrantedAuthority("READER"));
+                    
+        
         auth.inMemoryAuthentication()
-                .withUser("planner").password("planner").authorities(new SimpleGrantedAuthority("PLANNER"));
+                .withUser("planner").password("planner")
+                    .authorities(new SimpleGrantedAuthority("PLANNER"));
+                    
         auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
     }
     
@@ -64,4 +72,6 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    
+    
 }

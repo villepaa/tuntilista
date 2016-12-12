@@ -12,10 +12,12 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -42,8 +44,12 @@ public class EmployeeControllerTest {
     @Autowired
     private WebApplicationContext webAppContext;
     
+   
+    
+    
     private MockMvc mockMvc;
     
+   
  
         
     @BeforeClass
@@ -57,7 +63,12 @@ public class EmployeeControllerTest {
     
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
+        this.mockMvc = MockMvcBuilders
+                                    
+                                    .webAppContextSetup(webAppContext)
+                                    
+                                    .build();
+                                    
         
     }
     
@@ -66,7 +77,7 @@ public class EmployeeControllerTest {
     }
 
    @Test
-    public void addEmployee() throws Exception{
+   public void addEmployee() throws Exception{
         
         mockMvc.perform(post("/employees")
                        .param("forname", "Ville")
@@ -78,8 +89,14 @@ public class EmployeeControllerTest {
                        .param("username","eka")
                        .param("password","vekara")
                        
-                ).andDo(print())
+                       
+                )
+                                    
+
+                .andDo(print())
                 .andExpect(redirectedUrl("/employees"));
+                                       
+
         
         List <Employee> l = employeeRepository.findAll();
         Employee emp = new Employee();
@@ -112,12 +129,12 @@ public class EmployeeControllerTest {
                 emp = e;
             }
         }
-        String id = emp.getId().toString();
+        
         assertTrue(emp.getSurname().equals("Paavola"));
         
-//        mockMvc.perform(delete("employees/"+id)
-//                )
-//                .andExpect(redirectedUrl("/employees"));
+        employeeRepository.delete(emp.getId());
+        l = employeeRepository.findAll();
+        assertTrue(l.isEmpty());
     }
     
     @Test

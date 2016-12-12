@@ -3,18 +3,14 @@ package wad.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import java.util.Collections;
-
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +42,7 @@ public class PlanController {
         model.addAttribute("plans",planRepository.findAll());
         model.addAttribute("employees",employeeRepository.findAll());
         model.addAttribute("plan", new Plan());
+        
         return "plans";
     }
    

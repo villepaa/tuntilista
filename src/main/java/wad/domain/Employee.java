@@ -1,7 +1,6 @@
 
 package wad.domain;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CollectionTable;
@@ -11,8 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -21,7 +18,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Employee extends AbstractPersistable<Long> implements Comparable <Employee> {
     
     @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     @Length(min = 1, max = 30)
@@ -29,8 +26,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     
     @Length(min = 1, max = 30)
     private String surname;
-    
-    
+      
     private String address;
     
     @Length(min = 1, max = 10)
@@ -51,7 +47,8 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="userroles")
     private List<String> userRoles;
-
+    
+    
     public String getUsername() {
         return username;
     }
@@ -113,6 +110,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     public List<String> getQualifications() {
         return qualifications;
     }
+    
 
     public void setQualifications(List<String> qualifications) {
         this.qualifications = qualifications;
@@ -124,7 +122,11 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
 
     public void setUserRoles(List<String> userRoles) {
         this.userRoles = userRoles;
+        
     }
+
+   
+    
     
 
     @Override

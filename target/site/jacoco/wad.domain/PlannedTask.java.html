@@ -9,11 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
-<span class="fc" id="L16">public class PlannedTask extends AbstractPersistable&lt;Long&gt; implements Comparable&lt;PlannedTask&gt;{</span>
+<span class="fc" id="L15">public class PlannedTask extends AbstractPersistable&lt;Long&gt; implements Comparable&lt;PlannedTask&gt;{</span>
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,59 +31,59 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
    
 
     public PlannedEmployee getEmployee() {
-<span class="nc" id="L35">        return plannedEmployee;</span>
+<span class="nc" id="L34">        return plannedEmployee;</span>
     }
 
     public void setEmployee(PlannedEmployee employee) {
-<span class="nc" id="L39">        this.plannedEmployee = employee;</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L38">        this.plannedEmployee = employee;</span>
+<span class="nc" id="L39">    }</span>
     
     
 
     public Task getTask() {
-<span class="nc" id="L45">        return task;</span>
+<span class="nc" id="L44">        return task;</span>
     }
 
     public void setTask(Task task) {
-<span class="nc" id="L49">        this.task = task;</span>
-<span class="nc" id="L50">    }</span>
+<span class="nc" id="L48">        this.task = task;</span>
+<span class="nc" id="L49">    }</span>
 
     public LocalDate getDateof() {
-<span class="nc" id="L53">        return dateof;</span>
+<span class="nc" id="L52">        return dateof;</span>
     }
 
     public void setDateof(LocalDate dateof) {
-<span class="nc" id="L57">        this.dateof = dateof;</span>
-<span class="nc" id="L58">    }</span>
+<span class="nc" id="L56">        this.dateof = dateof;</span>
+<span class="nc" id="L57">    }</span>
 
         
     
     public Long getId() {
-<span class="nc" id="L63">        return id;</span>
+<span class="nc" id="L62">        return id;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L68">        int hash = 3;</span>
-<span class="nc" id="L69">        hash = 67 * hash + Objects.hashCode(this.id);</span>
-<span class="nc" id="L70">        hash = 67 * hash + Objects.hashCode(this.dateof);</span>
-<span class="nc" id="L71">        return hash;</span>
+<span class="nc" id="L67">        int hash = 3;</span>
+<span class="nc" id="L68">        hash = 67 * hash + Objects.hashCode(this.id);</span>
+<span class="nc" id="L69">        hash = 67 * hash + Objects.hashCode(this.dateof);</span>
+<span class="nc" id="L70">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (obj == null) {</span>
-<span class="nc" id="L77">            return false;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L76">            return false;</span>
         }
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
-<span class="nc" id="L80">            return false;</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L79">            return false;</span>
         }
-<span class="nc" id="L82">        final PlannedTask other = (PlannedTask) obj;</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (!Objects.equals(this.id, other.id)) {</span>
-<span class="nc" id="L84">            return false;</span>
+<span class="nc" id="L81">        final PlannedTask other = (PlannedTask) obj;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!Objects.equals(this.id, other.id)) {</span>
+<span class="nc" id="L83">            return false;</span>
         }
       
-<span class="nc" id="L87">        return true;</span>
+<span class="nc" id="L86">        return true;</span>
     }
 
     
@@ -92,7 +91,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
     @Override
     public int compareTo(PlannedTask o) {
        
-<span class="nc" id="L95">        return this.id.compareTo(o.getId());</span>
+<span class="nc" id="L94">        return this.id.compareTo(o.getId());</span>
        
     }
 

@@ -2,9 +2,6 @@
 package wad.domain;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
@@ -18,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
-<span class="fc" id="L21">public class Plan extends AbstractPersistable &lt;Long&gt; {</span>
+<span class="fc" id="L18">public class Plan extends AbstractPersistable &lt;Long&gt; {</span>
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,54 +34,54 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
     
     
     public String getName() {
-<span class="nc" id="L40">        return name;</span>
+<span class="nc" id="L37">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="nc" id="L44">        this.name = name;</span>
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L41">        this.name = name;</span>
+<span class="nc" id="L42">    }</span>
 
     public LocalDate getStartDate() {
-<span class="nc" id="L48">        return startDate;</span>
+<span class="nc" id="L45">        return startDate;</span>
     }
 
     public void setStartDate(LocalDate startDate) {
-<span class="nc" id="L52">        this.startDate = startDate;</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L49">        this.startDate = startDate;</span>
+<span class="nc" id="L50">    }</span>
 
     public LocalDate getEndDate() {
-<span class="nc" id="L56">        return endDate;</span>
+<span class="nc" id="L53">        return endDate;</span>
     }
 
     public void setEndDate(LocalDate endDate) {
-<span class="nc" id="L60">        this.endDate = endDate;</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L57">        this.endDate = endDate;</span>
+<span class="nc" id="L58">    }</span>
 
     public Set&lt;PlannedEmployee&gt; getEmployees() {
-<span class="nc" id="L64">        return employees;</span>
+<span class="nc" id="L61">        return employees;</span>
     }
 
     public void setEmployees(Set&lt;PlannedEmployee&gt; employees) {
-<span class="nc" id="L68">        this.employees = employees;</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L65">        this.employees = employees;</span>
+<span class="nc" id="L66">    }</span>
     
     public void addEmployee(PlannedEmployee e){
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if(this.employees == null){</span>
-<span class="nc" id="L73">            this.employees = new TreeSet&lt;&gt;();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if(this.employees == null){</span>
+<span class="nc" id="L70">            this.employees = new TreeSet&lt;&gt;();</span>
         }
-<span class="nc" id="L75">        this.employees.add(e);</span>
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L72">        this.employees.add(e);</span>
+<span class="nc" id="L73">    }</span>
     
     public void removeEmployee(PlannedEmployee e){
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        if(this.employees.contains(e)){</span>
-<span class="nc" id="L80">            this.employees.remove(e);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(this.employees.contains(e)){</span>
+<span class="nc" id="L77">            this.employees.remove(e);</span>
         }
         
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L80">    }</span>
 
     @Override
     public Long getId() {
-<span class="nc" id="L87">        return id;</span>
+<span class="nc" id="L84">        return id;</span>
     }
 
   

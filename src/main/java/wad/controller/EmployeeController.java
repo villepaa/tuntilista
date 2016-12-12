@@ -1,7 +1,6 @@
 
 package wad.controller;
 import java.util.ArrayList;
-import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +30,7 @@ public class EmployeeController {
      
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
     public String listEmployees(Model model){
+        
         model.addAttribute("employees", employeeRepository.findAll());
         return "employees";
     }
@@ -38,19 +38,22 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/new", method = RequestMethod.GET)
     public String showAddForm(Model model){
+        
         Employee employee = new Employee();
         employee.setQualifications(new ArrayList<>());
         employee.setUserRoles(new ArrayList<>());
         model.addAttribute("employee",employee);
         model.addAttribute("tasks",taskRepository.findAll());
-        
-        
+
+
         return "addEmployee";
+       
     }
     
     
     @RequestMapping(value = "/employees", method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
+          
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
@@ -59,6 +62,8 @@ public class EmployeeController {
         emp.setPassword(encoded);
         employeeRepository.save(emp);
         return "redirect:/employees";
+        
+       
     }
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.GET)
@@ -71,6 +76,7 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.PUT)
     public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
+          
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
@@ -83,15 +89,19 @@ public class EmployeeController {
         updated.setPhoneNumber(emp.getPhoneNumber());
         updated.setUserRoles(emp.getUserRoles());
         updated.setQualifications(emp.getQualifications());
-        
+
         employeeRepository.save(updated);
         return "redirect:/employees";
+            
+           
     }
    
      @RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
     public String deleteEmployee(@PathVariable Long id){
+           
         employeeRepository.delete(id);
         return "redirect:/employees";
+        
     }
     
     
