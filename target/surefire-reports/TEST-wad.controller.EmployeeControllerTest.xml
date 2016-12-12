@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="wad.controller.EmployeeControllerTest" time="0.435" tests="4" errors="0" skipped="0" failures="0">
+<testsuite name="wad.controller.EmployeeControllerTest" time="0.457" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64"/>
@@ -61,8 +61,8 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="deleteEmployee" classname="wad.controller.EmployeeControllerTest" time="0.259"/>
-  <testcase name="modelHasAttributesEmployees" classname="wad.controller.EmployeeControllerTest" time="0.021"/>
-  <testcase name="addEmployee" classname="wad.controller.EmployeeControllerTest" time="0.131"/>
-  <testcase name="statusOk" classname="wad.controller.EmployeeControllerTest" time="0.024"/>
+  <testcase name="deleteEmployee" classname="wad.controller.EmployeeControllerTest" time="0.28"/>
+  <testcase name="modelHasAttributesEmployees" classname="wad.controller.EmployeeControllerTest" time="0.024"/>
+  <testcase name="addEmployee" classname="wad.controller.EmployeeControllerTest" time="0.13"/>
+  <testcase name="statusOk" classname="wad.controller.EmployeeControllerTest" time="0.023"/>
 </testsuite>

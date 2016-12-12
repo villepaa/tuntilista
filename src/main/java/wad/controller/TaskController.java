@@ -5,7 +5,9 @@ package wad.controller;
 
 
 import javax.validation.Valid;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,8 @@ import wad.repository.TaskRepository;
 @Controller
 public class TaskController {
     
+    private static final Logger log = Logger.getLogger(PlanController.class);
+    
     @Autowired
     private TaskRepository taskRepository;
     
@@ -27,6 +31,10 @@ public class TaskController {
     
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     public String listTasks(Model model){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("listTasks: user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        
         model.addAttribute("tasks",taskRepository.findAll());
         return "tasks";
     } 
@@ -35,6 +43,9 @@ public class TaskController {
     
     @RequestMapping(value = "/tasks/new", method = RequestMethod.GET)
     public String showAddForm(Model m){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showAddTask: user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         m.addAttribute("task", new Task());
         return "addTask";
     }
@@ -43,6 +54,9 @@ public class TaskController {
     
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
     public String createTask(@Valid @ModelAttribute Task task,BindingResult bindingResult){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("createTask: " + task.getName() + " / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         if(bindingResult.hasErrors()){
             return "addTask";
         }
@@ -56,12 +70,18 @@ public class TaskController {
     
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
     public String showTask(Model model, @PathVariable Long id){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showTask: " + id  +  "user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         model.addAttribute("task",taskRepository.findOne(id));
         return "editTask";
     }
     
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.PUT)
     public String editTask(@Valid  @ModelAttribute Task task,@PathVariable Long id, BindingResult bindingResult){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("editTask: " + id  + " user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         if(bindingResult.hasErrors()){
             return "editTask";
         }
@@ -76,6 +96,9 @@ public class TaskController {
     
      @RequestMapping(value = "/tasks/{id}", method = RequestMethod.DELETE)
     public String deleteTask(@PathVariable Long id){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("deleteTask: " + id  +  " /user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         Task t = taskRepository.findOne(id);
         if(!t.getName().equals("VP")){
             taskRepository.delete(id);

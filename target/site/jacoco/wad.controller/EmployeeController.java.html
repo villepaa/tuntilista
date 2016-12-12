@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import wad.domain.Employee;
 import wad.repository.EmployeeRepository;
 import wad.repository.TaskRepository;
+import org.apache.log4j.Logger;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Controller
-<span class="fc" id="L19">public class EmployeeController {</span>
+<span class="fc" id="L22">public class EmployeeController {</span>
+    
+<span class="fc" id="L24">    private static final Logger log = Logger.getLogger(EmployeeController.class);</span>
     
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -31,76 +36,101 @@ import wad.repository.TaskRepository;
     @RequestMapping(value = &quot;/employees&quot;, method = RequestMethod.GET)
     public String listEmployees(Model model){
         
-<span class="fc" id="L34">        model.addAttribute(&quot;employees&quot;, employeeRepository.findAll());</span>
-<span class="fc" id="L35">        return &quot;employees&quot;;</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L40">            log.info(&quot;listEmployees() / user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
+        }
+        
+<span class="fc" id="L43">        model.addAttribute(&quot;employees&quot;, employeeRepository.findAll());</span>
+<span class="fc" id="L44">        return &quot;employees&quot;;</span>
     }
     
     
     @RequestMapping(value = &quot;/employees/new&quot;, method = RequestMethod.GET)
     public String showAddForm(Model model){
+       
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L52">            log.info(&quot;showAddForm() / user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
+        }
         
-<span class="nc" id="L42">        Employee employee = new Employee();</span>
-<span class="nc" id="L43">        employee.setQualifications(new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L44">        employee.setUserRoles(new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L45">        model.addAttribute(&quot;employee&quot;,employee);</span>
-<span class="nc" id="L46">        model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
+<span class="nc" id="L55">        Employee employee = new Employee();</span>
+<span class="nc" id="L56">        employee.setQualifications(new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L57">        employee.setUserRoles(new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L58">        model.addAttribute(&quot;employee&quot;,employee);</span>
+<span class="nc" id="L59">        model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
 
 
-<span class="nc" id="L49">        return &quot;addEmployee&quot;;</span>
+<span class="nc" id="L62">        return &quot;addEmployee&quot;;</span>
        
     }
     
     
     @RequestMapping(value = &quot;/employees&quot;, method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
-          
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if(bindingResult.hasErrors()) {</span>
-<span class="nc" id="L58">            model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
-<span class="nc" id="L59">            return &quot;addEmployee&quot;;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L70">            log.info(&quot;createEmployee() &quot; + emp.getUsername() + &quot;  / user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
         }
-<span class="fc" id="L61">        String encoded = encoder.encode(emp.getPassword());</span>
-<span class="fc" id="L62">        emp.setPassword(encoded);</span>
-<span class="fc" id="L63">        employeeRepository.save(emp);</span>
-<span class="fc" id="L64">        return &quot;redirect:/employees&quot;;</span>
+          
+        
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if(bindingResult.hasErrors()) {</span>
+<span class="nc" id="L75">            model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
+<span class="nc" id="L76">            return &quot;addEmployee&quot;;</span>
+        }
+<span class="fc" id="L78">        String encoded = encoder.encode(emp.getPassword());</span>
+<span class="fc" id="L79">        emp.setPassword(encoded);</span>
+<span class="fc" id="L80">        employeeRepository.save(emp);</span>
+<span class="fc" id="L81">        return &quot;redirect:/employees&quot;;</span>
         
        
     }
     
     @RequestMapping(value = &quot;/employees/{id}&quot;, method = RequestMethod.GET)
     public String showEmployee(Model model, @PathVariable Long id){
-<span class="nc" id="L71">        model.addAttribute(&quot;employee&quot;,employeeRepository.findOne(id));</span>
-<span class="nc" id="L72">        model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
         
-<span class="nc" id="L74">        return &quot;editEmployee&quot;;</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L90">            log.info(&quot;showEmployee: &quot; + id  + &quot; / user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
+        }
+        
+<span class="nc" id="L93">        model.addAttribute(&quot;employee&quot;,employeeRepository.findOne(id));</span>
+<span class="nc" id="L94">        model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
+        
+<span class="nc" id="L96">        return &quot;editEmployee&quot;;</span>
     }
     
     @RequestMapping(value = &quot;/employees/{id}&quot;, method = RequestMethod.PUT)
     public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
-          
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if(bindingResult.hasErrors()) {</span>
-<span class="nc" id="L81">            model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
-<span class="nc" id="L82">            return &quot;addEmployee&quot;;</span>
+        
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L103">            log.info(&quot;editEmployee: &quot; + id  + &quot; user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
         }
-<span class="nc" id="L84">        Employee updated = employeeRepository.findOne(id);</span>
-<span class="nc" id="L85">        updated.setForename(emp.getForename());</span>
-<span class="nc" id="L86">        updated.setSurname(emp.getSurname());</span>
-<span class="nc" id="L87">        updated.setEmail(emp.getEmail());</span>
-<span class="nc" id="L88">        updated.setAddress(emp.getAddress());</span>
-<span class="nc" id="L89">        updated.setPhoneNumber(emp.getPhoneNumber());</span>
-<span class="nc" id="L90">        updated.setUserRoles(emp.getUserRoles());</span>
-<span class="nc" id="L91">        updated.setQualifications(emp.getQualifications());</span>
+        
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if(bindingResult.hasErrors()) {</span>
+<span class="nc" id="L107">            model.addAttribute(&quot;tasks&quot;,taskRepository.findAll());</span>
+<span class="nc" id="L108">            return &quot;addEmployee&quot;;</span>
+        }
+<span class="nc" id="L110">        Employee updated = employeeRepository.findOne(id);</span>
+<span class="nc" id="L111">        updated.setForename(emp.getForename());</span>
+<span class="nc" id="L112">        updated.setSurname(emp.getSurname());</span>
+<span class="nc" id="L113">        updated.setEmail(emp.getEmail());</span>
+<span class="nc" id="L114">        updated.setAddress(emp.getAddress());</span>
+<span class="nc" id="L115">        updated.setPhoneNumber(emp.getPhoneNumber());</span>
+<span class="nc" id="L116">        updated.setUserRoles(emp.getUserRoles());</span>
+<span class="nc" id="L117">        updated.setQualifications(emp.getQualifications());</span>
 
-<span class="nc" id="L93">        employeeRepository.save(updated);</span>
-<span class="nc" id="L94">        return &quot;redirect:/employees&quot;;</span>
+<span class="nc" id="L119">        employeeRepository.save(updated);</span>
+<span class="nc" id="L120">        return &quot;redirect:/employees&quot;;</span>
             
            
     }
    
      @RequestMapping(value = &quot;/employees/{id}&quot;, method = RequestMethod.DELETE)
     public String deleteEmployee(@PathVariable Long id){
+        
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if(SecurityContextHolder.getContext().getAuthentication() != null){</span>
+<span class="nc" id="L129">            log.info(&quot;deleteEmployee: &quot; + id  + &quot; / user: &quot;+ SecurityContextHolder.getContext().getAuthentication().getName());</span>
+        }
            
-<span class="nc" id="L102">        employeeRepository.delete(id);</span>
-<span class="nc" id="L103">        return &quot;redirect:/employees&quot;;</span>
+<span class="nc" id="L132">        employeeRepository.delete(id);</span>
+<span class="nc" id="L133">        return &quot;redirect:/employees&quot;;</span>
         
     }
     

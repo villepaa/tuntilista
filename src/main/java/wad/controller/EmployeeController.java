@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import wad.domain.Employee;
 import wad.repository.EmployeeRepository;
 import wad.repository.TaskRepository;
+import org.apache.log4j.Logger;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Controller
 public class EmployeeController {
+    
+    private static final Logger log = Logger.getLogger(EmployeeController.class);
     
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -31,6 +36,10 @@ public class EmployeeController {
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
     public String listEmployees(Model model){
         
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("listEmployees() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        
         model.addAttribute("employees", employeeRepository.findAll());
         return "employees";
     }
@@ -38,6 +47,10 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/new", method = RequestMethod.GET)
     public String showAddForm(Model model){
+       
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showAddForm() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         
         Employee employee = new Employee();
         employee.setQualifications(new ArrayList<>());
@@ -53,7 +66,11 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees", method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("createEmployee() " + emp.getUsername() + "  / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
           
+        
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
@@ -68,6 +85,11 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.GET)
     public String showEmployee(Model model, @PathVariable Long id){
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showEmployee: " + id  + " / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        
         model.addAttribute("employee",employeeRepository.findOne(id));
         model.addAttribute("tasks",taskRepository.findAll());
         
@@ -76,7 +98,11 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.PUT)
     public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
-          
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("editEmployee: " + id  + " user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
@@ -98,6 +124,10 @@ public class EmployeeController {
    
      @RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
     public String deleteEmployee(@PathVariable Long id){
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("deleteEmployee: " + id  + " / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
            
         employeeRepository.delete(id);
         return "redirect:/employees";

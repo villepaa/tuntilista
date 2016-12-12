@@ -10,7 +10,7 @@ Tuntilista,wad.config,ProductionProfile,56,0,0,0,10,0,2,0,2,0
 Tuntilista,wad.config,SecurityConfiguration,122,0,0,0,20,0,4,0,4,0
 Tuntilista,wad.config,WebConfiguration,0,26,0,0,0,5,0,3,0,3
 Tuntilista,wad.config,DefaultSecurityConfiguration,165,0,0,0,28,0,4,0,4,0
-Tuntilista,wad.controller,EmployeeController,113,31,3,1,26,8,6,3,4,3
-Tuntilista,wad.controller,DefaultController,4,3,0,0,2,1,2,1,2,1
-Tuntilista,wad.controller,TaskController,82,12,6,0,21,3,8,2,5,2
-Tuntilista,wad.controller,PlanController,238,26,12,0,55,5,10,2,4,2
+Tuntilista,wad.controller,EmployeeController,214,41,13,3,36,11,12,4,4,4
+Tuntilista,wad.controller,DefaultController,34,7,4,0,6,2,4,2,2,2
+Tuntilista,wad.controller,TaskController,186,19,17,1,32,5,14,3,5,3
+Tuntilista,wad.controller,PlanController,318,33,21,1,64,7,15,3,4,3

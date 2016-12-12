@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.transaction.Transactional;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,8 @@ import wad.repository.TaskRepository;
 @Controller
 public class PlanController {
     
+    private static final Logger log = Logger.getLogger(PlanController.class);
+    
     @Autowired
     private EmployeeRepository employeeRepository;
     
@@ -39,6 +43,10 @@ public class PlanController {
     
     @RequestMapping(value = "/plans", method = RequestMethod.GET)
     public String showPlans(Model model){
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showPlans() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         model.addAttribute("plans",planRepository.findAll());
         model.addAttribute("employees",employeeRepository.findAll());
         model.addAttribute("plan", new Plan());
@@ -48,6 +56,9 @@ public class PlanController {
    
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.DELETE)
     public String showPlan(@PathVariable Long id){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showPlan() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         planRepository.delete(id);
         return "redirect:/plans";
     }
@@ -57,6 +68,9 @@ public class PlanController {
     @RequestMapping(value = "/plans", method = RequestMethod.POST)
     public String createPlan(@RequestParam String startDate, @RequestParam String endDate,
                              @RequestParam List<Long> chosen){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("createPlan() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         Plan p = new Plan();
                
         p.setStartDate(LocalDate.parse(startDate));
@@ -98,6 +112,9 @@ public class PlanController {
     
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.GET)
     public String showPlan(Model model,@PathVariable Long id){
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("showPlan: " + id  + " /user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         Plan plan = planRepository.findOne(id);
         ArrayList<PlannedTask> tasks = new ArrayList<>(plan.getEmployees().iterator().next().getTasks());
         Collections.sort(tasks);
@@ -109,6 +126,10 @@ public class PlanController {
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.PUT)
     public String updatePlan(Model model,@RequestParam Long employeeId,@RequestParam Long ptaskId, 
                              @RequestParam String taskName, @PathVariable Long id){
+        
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("updatePlan: " + id  + " /user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         Plan plan = planRepository.findOne(id);
         Set <PlannedEmployee> emps = plan.getEmployees();
         PlannedEmployee newEmp = new PlannedEmployee();
