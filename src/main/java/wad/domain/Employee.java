@@ -10,8 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
@@ -21,29 +23,40 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Length(min = 1, max = 30)
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @NotEmpty(message="Ei saa olla tyhjä!")
+    @Length(max = 30, message="Pituus ei saa olla yli 30 merkkiä!")
     private String forename;
     
-    @Length(min = 1, max = 30)
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @NotEmpty(message="Ei saa olla tyhjä!")
+    @Length(max = 30, message="Pituus ei saa olla yli 30 merkkiä!")
     private String surname;
-      
+    
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
     private String address;
     
-    @Length(min = 1, max = 10)
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @NotEmpty(message="Ei saa olla tyhjä!")
+    @Length(max = 10, message="Pituus ei saa olla yli 10 merkkiä!")
     private String username;
     
-    @Length(min = 1)
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @NotEmpty(message="Ei saa olla tyhjä!")
     private String password;
     
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
     private String phoneNumber;
     
-    @Email
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @Email(message="Sähköpostiosoite muodossa: example@something.com")
     private String email;
     
     @ElementCollection
     @CollectionTable(name="qualifications")
     private List<String> qualifications;
     
+    @NotEmpty(message="Valitse käyttöoikeudet!")
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="userroles")
     private List<String> userRoles;
@@ -162,6 +175,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
         return id;
     }
 
+    
     
     
     

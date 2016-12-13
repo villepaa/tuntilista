@@ -90,7 +90,7 @@
                                   <label th:text="Admin"></label>
                               </li>
                           </ul>        
-
+                          <p class="alert-danger" th:if="${#fields.hasErrors('userRoles')}" th:errors="*{userRoles}">Virheviesti</p>
                       </div>
 
                       <div class="form-group">

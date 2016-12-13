@@ -12,7 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
@@ -21,14 +23,21 @@ public class Task extends AbstractPersistable <Long>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-      
-    @Length(min = 1, max = 15)
+    
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
+    @NotEmpty(message="Ei saa olla tyhjä!")
+    @Length(max = 15, message="Pituus ei saa olla yli 15 merkkiä!")
     private String name;
-    @NotNull
+    
+    
+    @NotNull(message = "Aika pitää valita!")
     private LocalTime startTime;
-    @NotNull
+    
+    
+    @NotNull(message = "Aika pitää valita!")
     private LocalTime endTime;
     
+    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
     private String information;
    
 

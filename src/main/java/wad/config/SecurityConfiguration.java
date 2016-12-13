@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
      @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
        auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").authorities(new SimpleGrantedAuthority("ADMIN"));
+                .withUser("president").password("MargaretThacherIs100%Sexy").authorities(new SimpleGrantedAuthority("ADMIN"));
        auth.userDetailsService(userRoleService).passwordEncoder(passwordEncoder());
     }
 

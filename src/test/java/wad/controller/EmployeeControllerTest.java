@@ -1,8 +1,9 @@
 package wad.controller;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
-import static org.h2.store.fs.FileUtils.delete;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -78,9 +78,10 @@ public class EmployeeControllerTest {
 
    @Test
    public void addEmployee() throws Exception{
-        
+       String[] l = new String[1];
+        l[0]="ADMIN";
         mockMvc.perform(post("/employees")
-                       .param("forname", "Ville")
+                       .param("forename", "Ville")
                        .param("surname", "Paavola")
                        .param("address", "Skip")
                        .param("phoneNumber", "040-3948398")
@@ -88,6 +89,7 @@ public class EmployeeControllerTest {
                        .param("qualification","")
                        .param("username","eka")
                        .param("password","vekara")
+                       .param("userRoles",l)
                        
                        
                 )
@@ -98,9 +100,9 @@ public class EmployeeControllerTest {
                                        
 
         
-        List <Employee> l = employeeRepository.findAll();
+        List <Employee> li = employeeRepository.findAll();
         Employee emp = new Employee();
-        for(Employee e:l){
+        for(Employee e:li){
             if(e.getSurname().equals("Paavola")){
                 emp = e;
             }
@@ -110,8 +112,10 @@ public class EmployeeControllerTest {
     
     @Test
     public void deleteEmployee() throws Exception{
+        String[] l = new String[1];
+        l[0]="ADMIN";
         mockMvc.perform(post("/employees")
-                       .param("forname", "Ville")
+                       .param("forename", "Ville")
                        .param("surname", "Paavola")
                        .param("address", "Skip")
                        .param("phoneNumber", "040-3948398")
@@ -119,12 +123,13 @@ public class EmployeeControllerTest {
                        .param("qualification","")
                        .param("username","eka")
                        .param("password","vekara")
+                       .param("userRoles",l)
                 )
                 .andExpect(redirectedUrl("/employees"));
         
-        List <Employee> l = employeeRepository.findAll();
+        List <Employee> li = employeeRepository.findAll();
         Employee emp = new Employee();
-        for(Employee e:l){
+        for(Employee e:li){
             if(e.getSurname().equals("Paavola")){
                 emp = e;
             }
@@ -133,8 +138,8 @@ public class EmployeeControllerTest {
         assertTrue(emp.getSurname().equals("Paavola"));
         
         employeeRepository.delete(emp.getId());
-        l = employeeRepository.findAll();
-        assertTrue(l.isEmpty());
+        li = employeeRepository.findAll();
+        assertTrue(li.isEmpty());
     }
     
     @Test
