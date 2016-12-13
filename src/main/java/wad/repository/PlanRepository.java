@@ -9,6 +9,6 @@ import wad.domain.Plan;
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
     
-    @Query(value = "SELECT MAX(p.endDate) FROM Plan p", nativeQuery= true)
+    @Query(value = "SELECT MAX(END_DATE) FROM Plan", nativeQuery= true)
     public LocalDate findOneByLatestEndDate();
 }
