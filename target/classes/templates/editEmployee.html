@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head>
+        <title>Addemployee</title>
+        <meta charset="UTF-8"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/site.js}"></script>
+    </head>
+    <body>
+        
+          
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+
+        <div class="col-md-6">
+
+          <h1>Muokkaa työntekijän tietoja</h1>
+
+                <form th:method="PUT" th:action="@{/employees/{id} (id=${employee.id})}" th:object="${employee}">
+                        
+                     <div class="form-group">
+                        <label>Etunimi</label>
+                        <input type="text" th:field="*{forename}" class="form-control" value="${employee.forename}" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>    
+                     </div>
+                      <div class="form-group">
+                        <label>Sukunimi</label>
+                        <input type="text" th:field="*{surname}" class="form-control" value="${employee.surname}" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
+                      </div>
+                      <div class="form-group">
+                        <label>Osoite</label>
+                        <input type="text" th:field="*{address}" class="form-control" value="${employee.address}" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
+                      </div>
+                      <div class="form-group">
+                        <label>Puhelin</label>
+                        <input type="text" th:field="*{phoneNumber}" class="form-control" value="${employee.phoneNumber}" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
+                      </div>
+                       <div class="form-group">
+                        <label>Sähköposti</label>
+                        <input type="text" th:field="*{email}" class="form-control" value="${employee.email}" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
+                       </div>
+                        
+                       
+                                     
+                      <div class="form-group">
+
+                          <label>Pätevyydet</label><label class="col-xs-offset-1" ><input type="checkbox" id="kaikki"/>Valitse kaikki</label>
+
+                          <ul class="checkbox-inline" id="kaikkiPatevyydet">
+                              <li th:each="task : ${tasks}">
+                                  <input type="checkbox" th:field="*{qualifications}"  th:value="${task.name}" />
+                                  <label th:text="${task.name}"></label>
+                              </li>
+                          </ul>        
+
+                      </div>
+                    
+                      <div class="form-group" sec:authorize="hasAuthority('ADMIN')">
+
+                          <label>Käyttöoikeudet</label>
+
+                          <ul class="checkbox-inline">
+                              <li>
+                                  <input type="checkbox" th:field="*{userRoles}" th:value="PLANNER" />
+                                  <label th:text="Planner"></label>
+                              </li>
+                              <li>
+                                  <input type="checkbox" th:field="*{userRoles}" th:value="READER" />
+                                  <label th:text="Reader"></label>
+                              </li>
+                              <li>
+                                  <input type="checkbox" th:field="*{userRoles}" th:value="ADMIN" />
+                                  <label th:text="Admin"></label>
+                              </li>
+                          </ul>        
+                          <p class="alert-danger" th:if="${#fields.hasErrors('userRoles')}" th:errors="*{userRoles}">Virheviesti</p>
+                      </div>
+
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Tallenna</button>
+                        <a th:href="@{/employees}"  class="btn btn-danger">Peruuta</a>
+                      </div>
+
+                </form>
+
+               
+        </div>
+        
+        
+    </body>
+</html>

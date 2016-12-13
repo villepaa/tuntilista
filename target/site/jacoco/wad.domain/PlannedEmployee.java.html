@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PlannedEmployee.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tuntilista</a> &gt; <a href="index.source.html" class="el_package">wad.domain</a> &gt; <span class="el_source">PlannedEmployee.java</span></div><h1>PlannedEmployee.java</h1><pre class="source lang-java linenums">
+package wad.domain;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+<span class="fc" id="L22">public class PlannedEmployee extends AbstractPersistable&lt;Long&gt; implements Comparable&lt;PlannedEmployee&gt;{</span>
+    
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Plan plan;
+    
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Employee employee;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = &quot;plannedEmployee&quot;)
+    private List&lt;PlannedTask&gt; tasks;
+        
+       
+    @Override
+    public Long getId() {
+<span class="fc" id="L42">        return id;</span>
+    }
+    
+
+ 
+    public Employee getEmployee() {
+<span class="fc" id="L48">        return employee;</span>
+    }
+
+    public void setEmployee(Employee employee) {
+<span class="fc" id="L52">        this.employee = employee;</span>
+<span class="fc" id="L53">    }</span>
+
+    public List&lt;PlannedTask&gt; getTasks() {
+<span class="fc" id="L56">        Collections.sort(tasks);</span>
+<span class="fc" id="L57">        return tasks;</span>
+    }
+
+    public void setTasks(List&lt;PlannedTask&gt; tasks) {
+<span class="fc" id="L61">        this.tasks = tasks;</span>
+<span class="fc" id="L62">    }</span>
+
+    
+
+    public Plan getPlan() {
+<span class="fc" id="L67">        return plan;</span>
+    }
+
+    public void setPlan(Plan plan) {
+<span class="fc" id="L71">        this.plan = plan;</span>
+<span class="fc" id="L72">    }</span>
+    
+    public void addTask(PlannedTask t){
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if(this.tasks == null){</span>
+<span class="nc" id="L76">            this.tasks = new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L78">        this.tasks.add(t);</span>
+       
+            
+<span class="nc" id="L81">    }</span>
+    
+     public void removeTask(PlannedTask t){
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if(this.tasks.contains(t)){</span>
+<span class="nc" id="L85">            this.tasks.remove(t);</span>
+        }
+        
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L92">        int hash = 5;</span>
+<span class="fc" id="L93">        hash = 97 * hash + Objects.hashCode(this.id);</span>
+<span class="fc" id="L94">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L100">            return false;</span>
+        }
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L103">            return false;</span>
+        }
+<span class="fc" id="L105">        final PlannedEmployee other = (PlannedEmployee) obj;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (!Objects.equals(this.id, other.id)) {</span>
+<span class="nc" id="L107">            return false;</span>
+        }
+<span class="fc" id="L109">        return true;</span>
+    }
+
+    @Override
+    public int compareTo(PlannedEmployee o) {
+<span class="nc" id="L114">        return this.employee.compareTo(o.employee);</span>
+    }
+     
+    
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

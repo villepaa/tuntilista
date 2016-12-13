@@ -16,6 +16,8 @@ import wad.repository.EmployeeRepository;
 import wad.repository.TaskRepository;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 
 @Controller
@@ -66,18 +68,23 @@ public class EmployeeController {
     
     @RequestMapping(value = "/employees", method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
-        if(SecurityContextHolder.getContext().getAuthentication() != null){
-            log.info("createEmployee() " + emp.getUsername() + "  / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        Employee employee = employeeRepository.findByUsername(emp.getUsername());
+        if(employee != null){
+            bindingResult.addError(new FieldError("Employee","username","Käyttäjänimi jo käytössä!"));
         }
-          
         
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
         }
+        
+        
         String encoded = encoder.encode(emp.getPassword());
         emp.setPassword(encoded);
         employeeRepository.save(emp);
+        if(SecurityContextHolder.getContext().getAuthentication() != null){
+            log.info("createEmployee() " + emp.getUsername() + "  / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
+        }
         return "redirect:/employees";
         
        

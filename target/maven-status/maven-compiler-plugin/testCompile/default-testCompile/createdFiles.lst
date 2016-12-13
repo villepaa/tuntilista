@@ -1,0 +1,8 @@
+wad/domain/PlanTest.class
+wad/domain/EmployeeTest.class
+wad/domain/PlannedEmployeeTest.class
+wad/domain/PlannedTaskTest.class
+wad/domain/TaskTest.class
+wad/controller/PlanControllerTest.class
+wad/controller/EmployeeControllerTest.class
+wad/controller/TaskControllerTest.class

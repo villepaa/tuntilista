@@ -21,7 +21,7 @@ public class PlanForm{
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
         
-    @NotEmpty(message = "Päivämäärää ei valittu")
+    @NotEmpty(message = "Valitse työntekijät")
     private List<Long> employeeIds;
 
     public LocalDate getStartDate() {
