@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,9 +51,16 @@ public class PlanController {
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("showPlans() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
+        PlanForm form = new PlanForm();
+        
+        LocalDate latest = planRepository.findOneByLatestEndDate();
+        if(latest != null){
+            form.setStartDate(latest.plusDays(1));
+            
+        }
         model.addAttribute("plans",planRepository.findAll());
         model.addAttribute("employees",employeeRepository.findAll());
-        model.addAttribute("planForm",new PlanForm());
+        model.addAttribute("planForm",form);
         
         return "plans";
     }
@@ -70,7 +78,9 @@ public class PlanController {
     @Transactional
     @RequestMapping(value = "/plans", method = RequestMethod.POST)
     public String createPlan(@Valid @ModelAttribute PlanForm planForm, BindingResult result, Model model){
-             
+        if(planForm.getEndDate().isBefore(planForm.getStartDate())){
+             result.addError(new FieldError("PlanForm","endDate","Loppupäivämäärä ennen alkupäivämäärää!"));
+        }     
         
         if(result.hasErrors()){
             if(SecurityContextHolder.getContext().getAuthentication() != null){

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Addtask</title>
+        <meta charset="UTF-8"/>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+       
+    </head>
+    <body>
+        
+          
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+        
+        <div class="col-md-6">
+    
+            <h1>Lisää työvuoro</h1>
+    
+                <form action="#"  method="POST" th:action="@{/tasks}" th:object="${task}">
+
+                      <div class="form-group">
+                          <label>Tunnus</label>
+                          <input type="text" th:field="*{name}" class="form-control" />
+                          <p class="alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Virheviesti</p>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Alkuaika</label>
+                        <input type="time" th:field="*{startTime}" class="form-control" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}">Virheviesti</p>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label>Loppuaika</label>
+                        <input type="time" th:field="*{endTime}" class="form-control" />
+                        <p class="alert-danger" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">Virheviesti</p>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Lisätietoja</label>
+                        <textarea th:field="*{information}" class="form-control"></textarea>
+                        <p class="alert-danger" th:if="${#fields.hasErrors('information')}" th:errors="*{information}">Virheviesti</p>
+                      </div>
+
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Tallenna</button>
+                        <a th:href="@{/tasks}" class="btn btn-danger">Peruuta</a>
+                      </div>
+
+                </form>
+
+                
+              
+
+        </div>  
+    
+    </body>
+    
+</html>

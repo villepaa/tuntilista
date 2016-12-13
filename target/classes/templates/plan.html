@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Plan</title>
+        <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/site.css}"/>
+        <script type="text/javascript" th:src="@{/js/site.js}" />
+       
+    </head>
+    <body>
+        
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
+        <h1 th:text="${plan.name}"> </h1>
+        
+        <p sec:authorize="hasAnyAuthority('PLANNER','ADMIN')">Työvuoron lisääminen työntekijälle: 1. Liikuta hiiren osoitin halutun päivämäärän päälle ja paina painiketta. 2. Valitse avautuvasta listasta haluttu työvuoro.
+           HUOM! Vapaapäivä (=VP) näkyy työvuorolistassa tyhjänä ruutuna.
+           
+        </p>
+        
+        
+            <table class="table-condensed table-bordered">
+
+                <thead>
+                    <tr>
+                        <th><label>HENKILÖ / </label> <label>PVM</label>  </th>
+                       
+                            <th th:each="day : ${dates}" th:text="${day.dateof}"></th>
+                        
+                    </tr>
+
+                </thead> 
+
+                <tbody>
+                    
+                    <tr th:each="planEmployee : ${plan.employees}">
+
+                       <td th:text="${planEmployee.employee.surname}">Name</td>
+                       <td th:each="ptask : ${planEmployee.tasks}" class="plannable" th:id="${ptask.id}">
+                       
+                                
+                                <form th:method="put" th:action="@{/plans/{id} (id = ${plan.id})}">
+                                    <span th:unless="${ptask.task.name == 'VP'}" th:text="${ptask.task.name}"></span>
+                                    
+                                    <input hidden="hidden" type="text" name="employeeId" th:value="${planEmployee.id}"></input>
+                                    <input hidden="hidden" type="text" name="ptaskId" th:value="${ptask.id}"></input>
+                                    <div class="dropdown suunnittelu" th:id="'Task'+${ptask.id}" sec:authorize="hasAnyAuthority('PLANNER','ADMIN')">
+                                        <button class="btn-sm" type="button" data-toggle="dropdown"></button>
+                                            <ul class="dropdown-menu">
+                                                <li th:each="q : ${planEmployee.employee.qualifications}"><input class="dropdown-item" type='submit' name='taskName' th:text="${q}" th:value="${q}">Qual</input></li>
+                                            </ul>
+                                    </div>
+                                </form>    
+                       
+                       </td>          
+                    </tr>   
+                </tbody>
+
+
+            </table>
+            <p>
+                <a th:href="@{/plans}"  class="btn btn-success">Paluu</a>
+            </p>          
+             
+    </body>
+</html>

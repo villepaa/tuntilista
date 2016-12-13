@@ -60,8 +60,8 @@
 
                         <div class="form-group">
                             <label>Alkupäivä</label>
-                            <div class="input-group date form_alkupaiva">    
-                                 <input type="date" name="startDate" class="form-control" />
+                            <div class="input-group date form_alkupaiva" id="alkupaiva">    
+                                 <input type="date" th:field="*{startDate}" class="form-control"  />
                                  <p class="alert-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">Virheviesti</p>
 
                             </div>
@@ -70,7 +70,7 @@
                             <label>Loppupäivä</label>
                             <div class="input-group date form_loppupaiva">
 
-                                 <input type="date" name="endDate" class="form-control"/>
+                                 <input type="date" th:field="*{endDate}" class="form-control"/>
                                  <p class="alert-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">Virheviesti</p>
                             </div>     
                         </div>

@@ -27,5 +27,9 @@ $(document).ready(function(){
           $('#kaikkiPatevyydet input').prop('checked',false);
       }
    });
+   
+   var date = $('#alkupaiva input').val();
+   
+   $('#alkupaiva input').attr("min",date);
 
 });
