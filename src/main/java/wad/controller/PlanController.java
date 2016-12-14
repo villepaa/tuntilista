@@ -4,6 +4,7 @@ package wad.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.transaction.Transactional;
@@ -51,14 +52,15 @@ public class PlanController {
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("showPlans() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
+        List<Plan> allPlans = planRepository.findAll();
         PlanForm form = new PlanForm();
+        LocalDate latest = LocalDate.MIN;
         
-        LocalDate latest = planRepository.findOneByLatestEndDate();
-        if(latest != null){
-            form.setStartDate(latest.plusDays(1));
-            
+        if(!allPlans.isEmpty()){
+            latest = allPlans.get(allPlans.size()-1).getEndDate().plusDays(1); 
+            form.setStartDate(latest);
         }
-        model.addAttribute("plans",planRepository.findAll());
+        model.addAttribute("plans",allPlans);
         model.addAttribute("employees",employeeRepository.findAll());
         model.addAttribute("planForm",form);
         
