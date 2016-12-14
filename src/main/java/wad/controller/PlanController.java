@@ -80,10 +80,7 @@ public class PlanController {
     @Transactional
     @RequestMapping(value = "/plans", method = RequestMethod.POST)
     public String createPlan(@Valid @ModelAttribute PlanForm planForm, BindingResult result, Model model){
-        if(planForm.getEndDate().isBefore(planForm.getStartDate())){
-             result.addError(new FieldError("PlanForm","endDate","Loppupäivämäärä ennen alkupäivämäärää!"));
-        }     
-        
+                
         if(result.hasErrors()){
             if(SecurityContextHolder.getContext().getAuthentication() != null){
                 log.info("FAIL:createPlan() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
@@ -92,6 +89,13 @@ public class PlanController {
             model.addAttribute("employees",employeeRepository.findAll());
             return "plans";
         }
+        if(planForm.getEndDate().isBefore(planForm.getStartDate())){
+             result.addError(new FieldError("PlanForm","endDate","Loppupäivämäärä ennen alkupäivämäärää!"));
+             model.addAttribute("plans",planRepository.findAll());
+            model.addAttribute("employees",employeeRepository.findAll());
+            return "plans";
+        }     
+        
         Plan p = new Plan();
                
         p.setStartDate(planForm.getStartDate());
