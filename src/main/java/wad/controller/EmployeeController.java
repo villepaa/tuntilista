@@ -17,7 +17,7 @@ import wad.repository.TaskRepository;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+
 
 
 @Controller
@@ -28,7 +28,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
     
-     @Autowired
+    @Autowired
     private TaskRepository taskRepository;
      
     @Autowired
@@ -73,6 +73,10 @@ public class EmployeeController {
             bindingResult.addError(new FieldError("Employee","username","Käyttäjänimi jo käytössä!"));
         }
         
+        if(emp.getPassword().isEmpty()){
+            bindingResult.addError(new FieldError("Employee","password","Salasana ei saa olla tyhjä!"));
+        }
+        
         if(bindingResult.hasErrors()) {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
@@ -114,6 +118,7 @@ public class EmployeeController {
             model.addAttribute("tasks",taskRepository.findAll());
             return "addEmployee";
         }
+        
         Employee updated = employeeRepository.findOne(id);
         updated.setForename(emp.getForename());
         updated.setSurname(emp.getSurname());

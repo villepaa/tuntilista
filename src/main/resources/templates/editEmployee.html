@@ -48,6 +48,11 @@
                         <input type="text" th:field="*{email}" class="form-control" value="${employee.email}" />
                         <p class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Virheviesti</p>
                        </div>
+                      <div class="form-group">
+                        <label>Käyttäjänimi</label>
+                        <input type="text" th:field="*{username}" class="form-control" value="" disabled="disabled"/>
+                        <p class="alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Virheviesti</p>
+                      </div>
                         
                        
                                      

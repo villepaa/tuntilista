@@ -41,8 +41,7 @@ public class Employee extends AbstractPersistable<Long> implements Comparable <E
     @Length(max = 10, message="Pituus ei saa olla yli 10 merkkiä!")
     private String username;
     
-    @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
-    @NotEmpty(message="Ei saa olla tyhjä!")
+    
     private String password;
     
     @Pattern(regexp = "^[^<]*$", message ="Kenttä ei saa sisältää '<'-merkkiä")
