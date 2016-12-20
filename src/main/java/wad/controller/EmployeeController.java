@@ -1,6 +1,7 @@
 
 package wad.controller;
 import java.util.ArrayList;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import wad.domain.Employee;
 import wad.repository.EmployeeRepository;
 import wad.repository.TaskRepository;
 import org.apache.log4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
 
@@ -108,7 +110,7 @@ public class EmployeeController {
     }
     
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.PUT)
-    public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
+    public String editEmployee(Model model,@ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
         
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("editEmployee: " + id  + " user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
