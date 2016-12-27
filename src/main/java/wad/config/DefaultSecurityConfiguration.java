@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,12 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import wad.service.EmployeeUserRoleService;
 
 @Profile({"default"})
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true,proxyTargetClass=true)
 public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -26,7 +28,7 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // sallitaan h2-konsolin käyttö
+        
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
         
@@ -34,7 +36,7 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/*").permitAll()
                 
                 .antMatchers("/plans").hasAnyAuthority("PLANNER,ADMIN,READER") 
-                .antMatchers("/tasks").hasAnyAuthority("PLANNER,ADMIN") 
+                .antMatchers("/tasks").hasAnyAuthority("READER,PLANNER,ADMIN") 
                 .antMatchers("/employees/new").hasAnyAuthority("ADMIN")
                 .antMatchers("/employees").hasAnyAuthority("PLANNER,ADMIN")
                 .anyRequest().authenticated().and()
@@ -43,10 +45,27 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 
                 
         http.formLogin()
+               
                 .permitAll();
         http.logout()
                 .permitAll();
     }
+    
+//    @Configuration
+//    protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
+//
+//        @Autowired
+//        private JpaAuthenticationProvider jpaAuthenticationProvider;
+//
+//        @Override
+//        public void init(AuthenticationManagerBuilder auth) throws Exception {
+//            auth.authenticationProvider(jpaAuthenticationProvider);
+//            
+//            auth.inMemoryAuthentication()
+//                .withUser("admin").password("admin")
+//                    .authorities(new SimpleGrantedAuthority("ADMIN"));
+//        }
+//    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

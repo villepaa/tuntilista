@@ -11,6 +11,11 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +35,7 @@ import wad.service.validator.PlanForm;
 import wad.repository.EmployeeRepository;
 import wad.repository.PlanRepository;
 import wad.repository.TaskRepository;
+import wad.service.PlanService;
 
 
 @Controller
@@ -46,18 +52,31 @@ public class PlanController {
     @Autowired
     private PlanRepository planRepository;
     
+    @Autowired
+    private PlanService planService;
+    
+    @PreAuthorize("hasAnyAuthority('READER','PLANNER','ADMIN')")
     @RequestMapping(value = "/plans", method = RequestMethod.GET)
     public String showPlans(Model model){
         
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("showPlans() / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
+        
+        // haetaan viimeisimmän loppupäivämäärän mukaan suunnitelma-olio
+        
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "endDate");
+        Page<Plan> page = planRepository.findAll(pageable);
+        
         List<Plan> allPlans = planRepository.findAll();
         PlanForm form = new PlanForm();
         LocalDate latest = LocalDate.MIN;
         
         if(!allPlans.isEmpty()){
-            latest = allPlans.get(allPlans.size()-1).getEndDate().plusDays(1); 
+            
+            // Jos suunnitelmia oli olemassa, niin asetetaan viimeisen päivämäärä lomake-olioon
+            
+            latest = page.getContent().get(0).getEndDate().plusDays(1); 
             form.setStartDate(latest);
         }
         model.addAttribute("plans",allPlans);
@@ -66,7 +85,8 @@ public class PlanController {
         
         return "plans";
     }
-   
+    
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.DELETE)
     public String showPlan(@PathVariable Long id){
         if(SecurityContextHolder.getContext().getAuthentication() != null){
@@ -77,6 +97,7 @@ public class PlanController {
     }
     
     
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @Transactional
     @RequestMapping(value = "/plans", method = RequestMethod.POST)
     public String createPlan(@Valid @ModelAttribute PlanForm planForm, BindingResult result, Model model){
@@ -96,53 +117,26 @@ public class PlanController {
             return "plans";
         }     
         
-        Plan p = new Plan();
-               
-        p.setStartDate(planForm.getStartDate());
-        p.setEndDate(planForm.getEndDate());
-        p.setName(planForm.getStartDate().toString() + " - " + planForm.getEndDate().toString());
-        
-        Set <PlannedEmployee> emps = new TreeSet<>();
-
-        LocalDate dStart = planForm.getStartDate();
-        LocalDate dEnd = planForm.getEndDate().plusDays(1);
-        LocalDate d;
-        Task t = taskRepository.findByName("VP");
-        for(Long id: planForm.getEmployeeIds()){
-                d = dStart;
-                Employee e = employeeRepository.findOne(id);
-                PlannedEmployee pEmp = new PlannedEmployee();
-                pEmp.setPlan(p);
-                pEmp.setEmployee(e);
-                
-                while(d.isBefore(dEnd)){
-                    PlannedTask pt = new PlannedTask();
-                    pt.setDateof(d);
-                    pt.setEmployee(pEmp);
-                    pt.setTask(t);
-                    pEmp.addTask(pt);
-                    d = d.plusDays(1);
-                }
-                emps.add(pEmp);
-        }      
         
         
+        Plan p = planService.createPlan(planForm);
         
-        p.setEmployees(emps);
-        
-        p = planRepository.save(p);
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("createPlan: " + p.getId() + " / user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
+        
         return "redirect:/plans";
     }
     
-    
+    @PreAuthorize("hasAnyAuthority('READER','PLANNER','ADMIN')")
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.GET)
     public String showPlan(Model model,@PathVariable Long id){
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("showPlan: " + id  + " /user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
+        
+        // Näytetään suunnitelma, päivämäärät haetaan jonkin työntekijän listasta (vähän purkkaratkaisu...)
+        
         Plan plan = planRepository.findOne(id);
         ArrayList<PlannedTask> tasks = new ArrayList<>(plan.getEmployees().iterator().next().getTasks());
         Collections.sort(tasks);
@@ -151,6 +145,7 @@ public class PlanController {
         return "plan";
     }
     
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @RequestMapping(value = "/plans/{id}", method = RequestMethod.PUT)
     public String updatePlan(Model model,@RequestParam Long employeeId,@RequestParam Long ptaskId, 
                              @RequestParam String taskName, @PathVariable Long id){
@@ -158,29 +153,7 @@ public class PlanController {
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("updatePlan: " + id  + " /user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
         }
-        Plan plan = planRepository.findOne(id);
-        Set <PlannedEmployee> emps = plan.getEmployees();
-        PlannedEmployee newEmp = new PlannedEmployee();
-        PlannedTask newT = new PlannedTask();
-        int index = 0;
-        for(PlannedEmployee pEmp : emps){
-            if(pEmp.getId().equals(employeeId)){
-                newEmp = pEmp;
-                for(int i= 0;i<newEmp.getTasks().size();i++){
-                    PlannedTask t = newEmp.getTasks().get(i);
-                    if(t.getId().equals(ptaskId)){
-                        newT = t;
-                        newT.setTask(taskRepository.findByName(taskName));
-                        index = i;
-                }
-        }
-            }
-        }
-        newEmp.getTasks().remove(index);
-        newEmp.addTask(newT);
-        plan.addEmployee(newEmp);
-        planRepository.save(plan);
-        
-        return "redirect:/plans/" + plan.getId();
+        planService.updatePlan(employeeId,ptaskId,taskName,id);
+        return "redirect:/plans/" + id;
     }
 }

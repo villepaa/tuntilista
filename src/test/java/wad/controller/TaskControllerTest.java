@@ -2,7 +2,6 @@
 package wad.controller;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,9 +16,9 @@ import org.springframework.test.context.TestPropertySource;
 
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -42,9 +41,15 @@ public class TaskControllerTest {
     @Autowired
     private WebApplicationContext webAppContext;
     
+    @Autowired
+    private TaskController controller;
+    
     private MockMvc mockMvc;
     
     private Task t;
+    private Task testTask;
+    
+    
     
     @BeforeClass
     public static void setUpClass() {
@@ -63,11 +68,20 @@ public class TaskControllerTest {
         t.setStartTime(LocalTime.parse("08:00"));
         t.setInformation("info");
         t.setName("KV");
+        taskRepository.save(t);
+        
+        testTask = new Task();
+        testTask.setName("VP");
+        testTask.setEndTime(LocalTime.parse("00:00"));
+        testTask.setStartTime(LocalTime.parse("00:00"));
+        testTask.setInformation("vapaa");
+        taskRepository.save(testTask);
     }
     
     @After
     public void tearDown() {
-//        taskRepository.delete(t.getId());
+        taskRepository.deleteAll();
+        
     }
 
     @Test
@@ -84,13 +98,23 @@ public class TaskControllerTest {
     
     @Test
     public void addTaskTest() throws Exception {
-        
-        taskRepository.save(t);
-        List <Task> l = taskRepository.findAll();
+//        mockMvc.perform(post("/tasks")
+//                       .param("name", "OL")
+//                       .param("startTime", "08:00:00")
+//                       .param("endTime", "19:00:00")
+//                       .param("information", "uusi")
+//                       
+//                
+//                )
+//                .andDo(print())
+//                .andExpect(redirectedUrl("/tasks"));
         Task task = new Task();
-        for(Task t:l){
-            if(t.getName().equals("KV")){
-                task = t;
+        
+        List <Task> l = taskRepository.findAll();
+        
+        for(Task test:l){
+            if(test.getName().equals("KV")){
+                task = test;
             }
         }
         assertTrue(task.getName().equals("KV"));
@@ -99,20 +123,25 @@ public class TaskControllerTest {
     
     @Test
     public void editTaskTest() throws Exception {
-//        List <Task> l = taskRepository.findAll();
-//        assertTrue(l.isEmpty());
-//        taskRepository.save(t);
-//        
-//        Task uusi = taskRepository.findByName(t.getName());
-//        assertTrue(uusi.getId().equals(t.getId()));
-//        uusi.setName("OL");
-//        taskRepository.save(uusi);
-//        l = taskRepository.findAll();
-        assertTrue(true);
+        List <Task> l = taskRepository.findAll();
+                
+        Task uusi = taskRepository.findOne(t.getId());
+        assertTrue(uusi.getInformation().equals(t.getInformation()));
+        uusi.setInformation("uusi");
+        taskRepository.save(uusi);
+        Task muokattu = taskRepository.findOne(uusi.getId());
+        assertTrue(uusi.getInformation().equals(muokattu.getInformation()));
     }
     
     @Test
     public void deleteTaskTest() throws Exception {
         
+        controller.deleteTask(t.getId());
+        List <Task> l = taskRepository.findAll();
+        assertEquals(l.size(),1);
+        
+        controller.deleteTask(testTask.getId());
+        l = taskRepository.findAll();
+        assertTrue(l.size() == 1);
     }
 }

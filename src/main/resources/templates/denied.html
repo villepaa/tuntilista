@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <meta charset="UTF-8" />
         <title>Access denied</title>
@@ -16,7 +16,7 @@
             <p>header with links etc</p>
         </header>
         
-        <h1 class='h1'>Sinulla ei ole oikeuksia sivulle!</h1>
+        <h1 class='h1'>Sinulla ei ole oikeuksia sivulle tai suorittaa toimintoa!</h1>
         
         <a th:href="@{/}">Palaa etusivulle</a>
 

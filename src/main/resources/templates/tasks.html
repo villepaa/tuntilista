@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <title>Tasks</title>
         <meta charset="UTF-8" />
@@ -19,7 +19,7 @@
         
         <h1>TYÖVUOROT</h1>
   
-          <p>
+          <p sec:authorize="hasAnyAuthority('PLANNER','ADMIN')">
             <a th:href="@{/tasks/new}" class="btn btn-success">Lisää työvuoro</a>
           </p>
 

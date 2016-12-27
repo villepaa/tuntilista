@@ -35,12 +35,6 @@
         </dependency>
         
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-       
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -52,6 +46,18 @@
             <artifactId>thymeleaf-extras-springsecurity4</artifactId>
             <scope>compile</scope>
         </dependency>
+        
+        
+        <!-- Testing -->
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+         
+       
         
         <dependency>
             <groupId>org.jacoco</groupId>

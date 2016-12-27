@@ -15,7 +15,7 @@
             <ul class="nav nav-pills">
                 <li><a th:href="@{/}">Etusivu</a></li>
                 <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN')"><a th:href="@{/employees}">Työntekijät</a></li>
-                <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN')"><a th:href="@{/tasks}">Työvuorot</a></li>
+                <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN', 'READER')"><a th:href="@{/tasks}">Työvuorot</a></li>
                 <li sec:authorize="hasAnyAuthority('PLANNER','ADMIN', 'READER')"><a th:href="@{/plans}">Suunnitelma</a></li>
                 <li class="pull-right"><a  th:href="@{/logout}">Kirjaudu ulos</a></li>
             </ul>

@@ -64,10 +64,8 @@ public class EmployeeControllerTest {
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders
-                                    
-                                    .webAppContextSetup(webAppContext)
-                                    
-                                    .build();
+                            .webAppContextSetup(webAppContext)
+                            .build();
                                     
         
     }
@@ -93,11 +91,9 @@ public class EmployeeControllerTest {
                        
                        
                 )
-                                    
-
-                .andDo(print())
+                       
                 .andExpect(redirectedUrl("/employees"));
-                                       
+                         
 
         
         List <Employee> li = employeeRepository.findAll();

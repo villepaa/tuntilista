@@ -1,7 +1,6 @@
 
 package wad.controller;
 import java.util.ArrayList;
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +15,7 @@ import wad.domain.Employee;
 import wad.repository.EmployeeRepository;
 import wad.repository.TaskRepository;
 import org.apache.log4j.Logger;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
 
@@ -36,7 +35,7 @@ public class EmployeeController {
     @Autowired
     private PasswordEncoder encoder; 
     
-     
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @RequestMapping(value = "/employees", method = RequestMethod.GET)
     public String listEmployees(Model model){
         
@@ -48,7 +47,7 @@ public class EmployeeController {
         return "employees";
     }
     
-    
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/employees/new", method = RequestMethod.GET)
     public String showAddForm(Model model){
        
@@ -67,7 +66,7 @@ public class EmployeeController {
        
     }
     
-    
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/employees", method = RequestMethod.POST)
     public String createEmployee(Model model,@Valid @ModelAttribute Employee emp, BindingResult bindingResult){
         Employee employee = employeeRepository.findByUsername(emp.getUsername());
@@ -96,6 +95,7 @@ public class EmployeeController {
        
     }
     
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.GET)
     public String showEmployee(Model model, @PathVariable Long id){
         
@@ -109,8 +109,9 @@ public class EmployeeController {
         return "editEmployee";
     }
     
+    @PreAuthorize("hasAnyAuthority('PLANNER','ADMIN')")
     @RequestMapping(value = "/employees/{id}", method = RequestMethod.PUT)
-    public String editEmployee(Model model,@ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
+    public String editEmployee(Model model, @Valid @ModelAttribute Employee emp, @PathVariable Long id, BindingResult bindingResult){
         
         if(SecurityContextHolder.getContext().getAuthentication() != null){
             log.info("editEmployee: " + id  + " user: "+ SecurityContextHolder.getContext().getAuthentication().getName());
@@ -135,8 +136,9 @@ public class EmployeeController {
             
            
     }
-   
-     @RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
     public String deleteEmployee(@PathVariable Long id){
         
         if(SecurityContextHolder.getContext().getAuthentication() != null){
